@@ -1,0 +1,43 @@
+﻿<Window x:Class="RPIControllerEmulator_Server.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RPIControllerEmulator_Server"
+        mc:Ignorable="d"
+        Title="ControllerEmulator" Height="450" Width="800">
+    <Grid Margin="10">
+        <!--- Connection -->
+        <Label Content="Connection type:" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="uartRadioButton" Content="UART" Margin="200,25,0,330"  Style="{StaticResource RadioButtonStyle}"/>
+        <RadioButton x:Name="bluetootRadioButton" Content="Bluetooth" Margin="350,25,0,330"  Style="{StaticResource RadioButtonStyle}"/>
+        <RadioButton x:Name="networkRadioButton" Content="Network" Margin="550,25,0,330" Style="{StaticResource RadioButtonStyle}" Width="130"/>
+        <Button x:Name="ConnectButton"
+            Content="Connect"
+            Click="ConnectButton_Click"
+            FontSize="20"
+            FontWeight="Bold"
+            HorizontalAlignment="Center"
+            Margin="0,90,0,0"
+            VerticalAlignment="Top"
+            Width="Auto"
+        />  
+        <!-- Controler type -->
+        <Label Content="Controller type:" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
+        <RadioButton Content="Keyboard" Margin="200,150,0,200"  Style="{StaticResource RadioButtonStyle}"/>
+        <RadioButton Content="Joystic" Margin="350,150,0,200"  Style="{StaticResource RadioButtonStyle}"/>
+        <RadioButton Content="Remote" Margin="480,150,0,200" Style="{StaticResource RadioButtonStyle}" Width="130"/>
+        <RadioButton Content="Custom" Margin="620,150,0,200" Style="{StaticResource RadioButtonStyle}" Width="130"/>
+        <Button x:Name="ShowControllerButton"
+            Content="Show Controller"
+                
+            FontSize="20"
+            FontWeight="Bold"
+            HorizontalAlignment="Center"
+            Margin="0,200,0,0"
+            VerticalAlignment="Top"
+            Width="Auto"
+        />
+
+    </Grid>
+</Window>
