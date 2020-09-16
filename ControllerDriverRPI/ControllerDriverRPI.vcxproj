@@ -71,11 +71,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="argumentParser.cpp" />
+    <ClCompile Include="globals.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkCommunication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="argumentParser.h" />
+    <ClInclude Include="globals.h" />
     <ClInclude Include="NetworkCommunication.h" />
   </ItemGroup>
   <ItemDefinitionGroup />

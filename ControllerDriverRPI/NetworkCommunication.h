@@ -10,8 +10,6 @@
 
 using namespace std;
 
-extern int clientSocket;
-
 char* getLocalIp();
 void* NetworkThread(void*);
 int NetworkCommunication_Start(uint16_t port);

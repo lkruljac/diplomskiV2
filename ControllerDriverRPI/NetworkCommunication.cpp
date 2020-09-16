@@ -12,10 +12,8 @@
 #include <net/if.h>
 
 #include "NetworkCommunication.h"
-
+#include "globals.h"
 using namespace std;
-
-int clientSocket = 0;
 
 char* getLocalIp()
 {
@@ -61,7 +59,7 @@ int NetworkCommunication_Start(uint16_t port) {
     sockaddr_in client;
     socklen_t clientSize = sizeof(client);
 
-    int clientSocket = accept(listening, (sockaddr*)&client, &clientSize);
+    clientSocket = accept(listening, (sockaddr*)&client, &clientSize);
 
     char host[NI_MAXHOST];      // Client's remote name
     char service[NI_MAXSERV];   // Service (i.e. port) the client is connect on
@@ -85,7 +83,6 @@ int NetworkCommunication_Start(uint16_t port) {
     // While loop: accept and echo message back to client
     char buf[4096];
 
-   
     memset(buf, 0, 4096);
 
     // Wait for client to send data

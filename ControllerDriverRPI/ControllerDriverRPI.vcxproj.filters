@@ -8,6 +8,9 @@
     <ClCompile Include="NetworkCommunication.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="globals.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -22,6 +25,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="NetworkCommunication.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

@@ -64,7 +64,10 @@ int main(int argc, char** argv)
             break;
     }
 
-    
+    while (true) {
+        printf("Ovdje radim obradu\n");
+        sleep(2);
+    }
 
     return 0;
 }
