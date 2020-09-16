@@ -54,7 +54,7 @@
       <LibraryDependencies>wiringPi</LibraryDependencies>
     </Link>
     <RemotePostBuildEvent>
-      <Command>./bin/ARM/Debug/ControllerDriverRPI.out</Command>
+      <Command>./bin/ARM/Debug/ControllerDriverRPI.out -n</Command>
       <Message>
       </Message>
     </RemotePostBuildEvent>
@@ -69,9 +69,13 @@
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="argumentParser.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NetworkCommunication.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="argumentParser.h" />
+    <ClInclude Include="NetworkCommunication.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

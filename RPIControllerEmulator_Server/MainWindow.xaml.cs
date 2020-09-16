@@ -47,18 +47,7 @@ namespace RPIControllerEmulator_Server
             }
             else if (networkRadioButton.IsChecked == true)
             {
-                NetworkConfigurationWindow networkConfigurationWindow = new NetworkConfigurationWindow();
-                networkConfigurationWindow.ShowDialog();
-
-                this.networkLinkAdapter = new NetworkLinkAdapter();
-                this.networkLinkAdapter.Connect(networkConfigurationWindow.getIP(), networkConfigurationWindow.getPort());
-                
-                if(networkLinkAdapter.getStatus() == "Connected")
-                {
-                    connectionStatusLabel.Content = "Connection status: Connected on ip " + networkConfigurationWindow.getIP();
-                    connectionStatusLabel.Content += ", on port " + networkConfigurationWindow.getPort();
-                }
-
+                ConnectNetwork();
             }
             else
             {
@@ -66,7 +55,20 @@ namespace RPIControllerEmulator_Server
                 return;
             }
         }
-             
+        
+        private void ConnectNetwork()
+        {
+            NetworkConfigurationWindow networkConfigurationWindow = new NetworkConfigurationWindow();
+            networkConfigurationWindow.ShowDialog();
+            this.networkLinkAdapter = new NetworkLinkAdapter();
+            this.networkLinkAdapter.Connect(networkConfigurationWindow.getIP(), networkConfigurationWindow.getPort());
+            if (networkLinkAdapter.getStatus() == "Connected")
+            {
+                connectionStatusLabel.Content = "Connection status: Connected on ip " + networkConfigurationWindow.getIP();
+                connectionStatusLabel.Content += ", on port " + networkConfigurationWindow.getPort();
+            }
+        }
+
         private void ConnectBluetooth()
         {
 
