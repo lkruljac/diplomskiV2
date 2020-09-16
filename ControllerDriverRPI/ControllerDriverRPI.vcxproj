@@ -51,10 +51,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
-      <LibraryDependencies>wiringPi</LibraryDependencies>
+      <LibraryDependencies>pthread</LibraryDependencies>
     </Link>
     <RemotePostBuildEvent>
-      <Command>./bin/ARM/Debug/ControllerDriverRPI.out -n</Command>
+      <Command>
+      </Command>
       <Message>
       </Message>
     </RemotePostBuildEvent>

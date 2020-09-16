@@ -23,13 +23,15 @@ void argumentDump(ARGUMENTS arguments)
     printf("Argument dump:\n");
     printf("FLAGS:\n\
             VersionFlag:\t%d\n\
-            NetworkFlag:\t%d\n\
-            BluetoothFlag:\t%d\n\
-            UARTFlag:\t\t\t%d\n\n\n",\
+            UARTFlag(0):\t\t%d\n\
+            BluetoothFlag(1):\t%d\n\
+            NetworkFlag(2):\t%d\n\
+            Connection type:\t\%d\n\n",
             arguments.versionFlag,
-            arguments.networkFlag,
+            arguments.uartFlag,
             arguments.bluetoothFlag,
-            arguments.uartFlag);
+            arguments.networkFlag,
+            arguments.connectionLinkType);
 }
 
 /* Parse a single option. */
@@ -52,21 +54,24 @@ static error_t parse_opt(int key, char* arg, struct argp_state* state)
 
         lastOption = key;
         break;
-    case 'n':
-        arguments->networkFlag = 1;
-        arguments->connectionLinkType = network;
-        lastOption = key;
-        break;
-    case 'b':
-        arguments->bluetoothFlag = 1;
-        arguments->connectionLinkType = bluetooth;
-        lastOption = key;
-        break;
     case 'u':
         arguments->uartFlag = 1;
         arguments->connectionLinkType = uart;
         lastOption = key;
         break;
+
+    case 'b':
+        arguments->bluetoothFlag = 1;
+        arguments->connectionLinkType = bluetooth;
+        lastOption = key;
+        break;
+
+    case 'n':
+        arguments->networkFlag = 1;
+        arguments->connectionLinkType = network;
+        lastOption = key;
+        break;
+
     case ARGP_KEY_NO_ARGS:
         break;
 

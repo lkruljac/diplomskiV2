@@ -17,9 +17,9 @@ typedef struct
     char** programArgs;
     int programArgsCounter;
     int versionFlag;
+    int uartFlag;
     int bluetoothFlag;
     int networkFlag;
-    int uartFlag;
     ConnectionType connectionLinkType;
 }ARGUMENTS;
 

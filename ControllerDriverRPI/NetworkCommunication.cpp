@@ -5,11 +5,38 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <string.h>
-#include <string>
+#include <stdio.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <net/if.h>
+
+#include "NetworkCommunication.h"
 
 using namespace std;
 
-int NetworkCommunication_Main(uint16_t port) {
+int clientSocket = 0;
+
+char* getLocalIp()
+{
+    int fd;
+    struct ifreq ifr;
+
+    fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    ifr.ifr_addr.sa_family = AF_INET;
+
+    snprintf(ifr.ifr_name, IFNAMSIZ, "eth0");
+
+    ioctl(fd, SIOCGIFADDR, &ifr);
+
+ 
+    close(fd);
+
+    return inet_ntoa(((struct sockaddr_in*)&ifr.ifr_addr)->sin_addr);
+}
+
+int NetworkCommunication_Start(uint16_t port) {
 
     // Create a socket
     int listening = socket(AF_INET, SOCK_STREAM, 0);
@@ -58,6 +85,38 @@ int NetworkCommunication_Main(uint16_t port) {
     // While loop: accept and echo message back to client
     char buf[4096];
 
+   
+    memset(buf, 0, 4096);
+
+    // Wait for client to send data
+    int bytesReceived = recv(clientSocket, buf, 4096, 0);
+    if (bytesReceived == -1)
+    {
+        cerr << "Error in recv(). Quitting" << endl;
+        return 1;
+    }
+
+    if (bytesReceived == 0)
+    {
+        cout << "Client disconnected " << endl;
+        return 1;
+    }
+
+    cout << string(buf, 0, bytesReceived) << endl;
+
+    // Echo message back to client
+    send(clientSocket, buf, bytesReceived + 1, 0);
+    
+    //close(clientSocket);
+    return 0;
+}
+
+void* NetworkThread(void*) {
+    printf("Network thread started:\n");
+    
+    
+    // While loop: accept and echo message back to client
+    char buf[4096];
     while (true)
     {
         memset(buf, 0, 4096);
@@ -79,10 +138,8 @@ int NetworkCommunication_Main(uint16_t port) {
         cout << string(buf, 0, bytesReceived) << endl;
 
         // Echo message back to client
+        send(clientSocket, "Response from thread, recived:", strlen("esponse from thread, recived:"), 0);
         send(clientSocket, buf, bytesReceived + 1, 0);
     }
-
-    // Close the socket
-    close(clientSocket);
-    return 0;
+    return nullptr;
 }
