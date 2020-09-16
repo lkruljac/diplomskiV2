@@ -31,6 +31,7 @@ namespace RPIControllerEmulator_Server
         {
             InitializeComponent();
             networkRadioButton.IsChecked = true;
+            keyboard_RadioButton.IsChecked = true;
         }
 
         private NetworkLinkAdapter networkLinkAdapter = null;
@@ -64,6 +65,7 @@ namespace RPIControllerEmulator_Server
             this.networkLinkAdapter.Connect(networkConfigurationWindow.getIP(), networkConfigurationWindow.getPort());
             if (networkLinkAdapter.getStatus() == "Connected")
             {
+                connectionStatusLabel.Background = new SolidColorBrush(Color.FromRgb(100, 150, 30));
                 connectionStatusLabel.Content = "Connection status: Connected on ip " + networkConfigurationWindow.getIP();
                 connectionStatusLabel.Content += ", on port " + networkConfigurationWindow.getPort();
             }
@@ -76,7 +78,30 @@ namespace RPIControllerEmulator_Server
 
         private void ShowControllerButton_Click(object sender, RoutedEventArgs e)
         {
-            this.networkLinkAdapter.SendMessage("Bla");
+            if (keyboard_RadioButton.IsChecked == true)
+            {
+
+                VirtualKeyboard virtualKeyboard = new VirtualKeyboard();
+                virtualKeyboard.setLinkAdapter(networkLinkAdapter);
+                virtualKeyboard.Show();
+            }
+            else if (joystic_RadioButton.IsChecked == true)
+            {
+
+            }
+            else if (remote_RadioButton.IsChecked == true)
+            {
+
+            }
+            else if (custom_RadioButton.IsChecked == true)
+            {
+                
+            }
+            else
+            {
+                MessageBox.Show("Controller type is not selected", "Unselected option", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
     }
 }

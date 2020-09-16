@@ -49,7 +49,7 @@ int main(int argc, char** argv)
         {
             int port = 54000;
             printf("Starting Network communication!\n");
-            printf("To set connection please use:\n\tIP: %s,\n\tport: %d\n\n", getLocalIp(), port);
+            printf("To set connection please use:\n\tIP: %s,\n\tport: %d\n\n", getLocalIp(arguments.networkAdapter), port);
             if (NetworkCommunication_Start((uint16_t)port) == 0) {
                 printf("Communication over network established, starting NetworkListeningThread!\n\n");
             }
@@ -65,8 +65,7 @@ int main(int argc, char** argv)
     }
 
     while (true) {
-        printf("Ovdje radim obradu\n");
-        sleep(2);
+    
     }
 
     return 0;

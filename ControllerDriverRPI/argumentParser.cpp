@@ -5,7 +5,7 @@ static struct argp_option options[] = {
 
         {"version", 'v', 0, 0, "show program's version number and exit\n" },
         {"bluetooth", 'b', 0, 0, "Start driver for bluetooth virtaul controller\n"},
-        {"netowrk", 'n', 0, 0, "Start driver for network virtaul controller\n" },
+        {"netowrk", 'n', "adapter", 0, "Start driver for network virtaul controller\n" },
         {"uart", 'u', 0, 0, "Start driver for uart virtaul controller\n"},
         { 0 }
 };
@@ -23,14 +23,16 @@ void argumentDump(ARGUMENTS arguments)
     printf("Argument dump:\n");
     printf("FLAGS:\n\
             VersionFlag:\t%d\n\
-            UARTFlag(0):\t\t%d\n\
+            UARTFlag(0):\t%d\n\
             BluetoothFlag(1):\t%d\n\
             NetworkFlag(2):\t%d\n\
+            NetworkAdapter:\t%s\n\
             Connection type:\t\%d\n\n",
             arguments.versionFlag,
             arguments.uartFlag,
             arguments.bluetoothFlag,
             arguments.networkFlag,
+            arguments.networkAdapter,
             arguments.connectionLinkType);
 }
 
@@ -69,9 +71,11 @@ static error_t parse_opt(int key, char* arg, struct argp_state* state)
     case 'n':
         arguments->networkFlag = 1;
         arguments->connectionLinkType = network;
+        printf("err");
+        arguments->networkAdapter = strdup(arg);
+
         lastOption = key;
         break;
-
     case ARGP_KEY_NO_ARGS:
         break;
 
@@ -109,6 +113,7 @@ void ArgpParser(int argc, char** argv, ARGUMENTS* parsedArgs)
     arguments.versionFlag = 0;
     arguments.bluetoothFlag = 0;
     arguments.networkFlag = 0;
+    arguments.networkAdapter = NULL;
     arguments.uartFlag = 0;
 
     //ARGP_IN_ORDER is important because of multiple args for single option logic in parse_opt()

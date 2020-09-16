@@ -15,7 +15,7 @@
 #include "globals.h"
 using namespace std;
 
-char* getLocalIp()
+char* getLocalIp(char* netAdapter)
 {
     int fd;
     struct ifreq ifr;
@@ -24,7 +24,7 @@ char* getLocalIp()
 
     ifr.ifr_addr.sa_family = AF_INET;
 
-    snprintf(ifr.ifr_name, IFNAMSIZ, "eth0");
+    snprintf(ifr.ifr_name, IFNAMSIZ, netAdapter);
 
     ioctl(fd, SIOCGIFADDR, &ifr);
 
@@ -109,10 +109,11 @@ int NetworkCommunication_Start(uint16_t port) {
 }
 
 void* NetworkThread(void*) {
+   
     printf("Network thread started:\n");
     
     
-    // While loop: accept and echo message back to client
+    // While loop: accept message
     char buf[4096];
     while (true)
     {
@@ -132,11 +133,7 @@ void* NetworkThread(void*) {
             break;
         }
 
-        cout << string(buf, 0, bytesReceived) << endl;
-
-        // Echo message back to client
-        send(clientSocket, "Response from thread, recived:", strlen("esponse from thread, recived:"), 0);
-        send(clientSocket, buf, bytesReceived + 1, 0);
+        cout << "recived:\t\t" << string(buf, 0, bytesReceived) << endl;
     }
     return nullptr;
 }

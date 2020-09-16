@@ -20,6 +20,7 @@ typedef struct
     int uartFlag;
     int bluetoothFlag;
     int networkFlag;
+    char* networkAdapter;
     ConnectionType connectionLinkType;
 }ARGUMENTS;
 

@@ -10,6 +10,6 @@
 
 using namespace std;
 
-char* getLocalIp();
+char* getLocalIp(char* netAdapter);
 void* NetworkThread(void*);
 int NetworkCommunication_Start(uint16_t port);

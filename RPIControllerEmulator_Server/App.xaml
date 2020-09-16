@@ -11,5 +11,26 @@
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+
+        <SolidColorBrush x:Key="numbersColor" Color="#444444"/>
+        <SolidColorBrush x:Key="operatorsColor" Color="Orange"/>
+        <SolidColorBrush x:Key="foregroundColor" Color="White"/>
+
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="keyboardButtonsStyle">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Background" Value="{StaticResource numbersColor}"/>
+        </Style>
+        <Style TargetType="Button" x:Key="additionalButtonsStyle" BasedOn="{StaticResource keyboardButtonsStyle}">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
     </Application.Resources>
 </Application>

@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace RPIControllerEmulator_Server.src
 {
-    class NetworkLinkAdapter
+    public class NetworkLinkAdapter : Sender
     {
         public NetworkLinkAdapter()
         {
@@ -24,7 +24,7 @@ namespace RPIControllerEmulator_Server.src
         {
             return this.status;
         }
-        public void SendMessage(string message)
+        public override void SendMessage(string message)
         {
             // Translate the passed message into ASCII and store it as a Byte array.
             Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
@@ -32,7 +32,7 @@ namespace RPIControllerEmulator_Server.src
             // Send the message to the connected TcpServer.
             this.stream.Write(data, 0, data.Length);
             
-            Console.WriteLine("Sent: {0}", "message");
+            Console.WriteLine("Sent: {0}", message);
         }
 
         public void Connect(string server, Int32 port)
@@ -67,7 +67,6 @@ namespace RPIControllerEmulator_Server.src
                 // Read the first batch of the TcpServer response bytes.
                 Int32 bytes = stream.Read(data, 0, data.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                MessageBox.Show("Received: " + responseData);
                 if(responseData == "Test message\0")
                 {
                     status = "Connected";
