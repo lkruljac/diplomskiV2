@@ -29,58 +29,52 @@ namespace RPIControllerEmulator_Server
         public MainWindow()
         {
             InitializeComponent();
+            networkRadioButton.IsChecked = true;
         }
 
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
-            string conectionType = null;
-
             if (uartRadioButton.IsChecked == true)
             {
-                conectionType = "uart";
             }
             else if (bluetootRadioButton.IsChecked == true)
             {
-                MessageBox.Show("Selected connection is " + conectionType);
+  
                 ConnectBluetooth();
             }
             else if (networkRadioButton.IsChecked == true)
             {
-                ConnectNetwork();
-                conectionType = "network";
+                NetworkConfigurationWindow networkConfigurationWindow = new NetworkConfigurationWindow();
+                networkConfigurationWindow.ShowDialog();
+                ConnectNetwork(networkConfigurationWindow.getIP(), networkConfigurationWindow.getPort());
             }
             else
             {
                 MessageBox.Show("Connection type is not selected", "Unselected option", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-
         }
-
+             
         private void ConnectBluetooth()
         {
 
         }
-        private void ConnectNetwork()
+        private void ConnectNetwork(string server, Int32 port)
         {
             string message = "Hello";
-            string server = "192.168.1.113";
+            server = "192.168.1.113";
             try
             {
                 // Create a TcpClient.
                 // Note, for this client to work you need to have a TcpServer
                 // connected to the same address as specified by the server, port
                 // combination.
-                Int32 port = 54000;
                 TcpClient client = new TcpClient(server, port);
 
                 // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 
                 // Get a client stream for reading and writing.
-                //  Stream stream = client.GetStream();
-
                 NetworkStream stream = client.GetStream();
 
                 // Send the message to the connected TcpServer.
@@ -110,10 +104,6 @@ namespace RPIControllerEmulator_Server
             {
                 Console.WriteLine("SocketException: {0}", e);
             }
-
-            Console.WriteLine("\n Press Enter to continue...");
-            Console.Read();
-
         }
     }
 }
