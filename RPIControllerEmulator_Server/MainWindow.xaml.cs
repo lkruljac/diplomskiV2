@@ -17,7 +17,8 @@ using InTheHand.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
 using System.Net;
-
+using Windows.Networking.Connectivity;
+using RPIControllerEmulator_Server.src;
 
 namespace RPIControllerEmulator_Server
 {
@@ -31,6 +32,8 @@ namespace RPIControllerEmulator_Server
             InitializeComponent();
             networkRadioButton.IsChecked = true;
         }
+
+        private NetworkLinkAdapter networkLinkAdapter = null;
 
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
@@ -46,7 +49,16 @@ namespace RPIControllerEmulator_Server
             {
                 NetworkConfigurationWindow networkConfigurationWindow = new NetworkConfigurationWindow();
                 networkConfigurationWindow.ShowDialog();
-                ConnectNetwork(networkConfigurationWindow.getIP(), networkConfigurationWindow.getPort());
+
+                this.networkLinkAdapter = new NetworkLinkAdapter();
+                this.networkLinkAdapter.Connect(networkConfigurationWindow.getIP(), networkConfigurationWindow.getPort());
+                
+                if(networkLinkAdapter.getStatus() == "Connected")
+                {
+                    connectionStatusLabel.Content = "Connection status: Connected on ip " + networkConfigurationWindow.getIP();
+                    connectionStatusLabel.Content += ", on port " + networkConfigurationWindow.getPort();
+                }
+
             }
             else
             {
@@ -59,51 +71,10 @@ namespace RPIControllerEmulator_Server
         {
 
         }
-        private void ConnectNetwork(string server, Int32 port)
+
+        private void ShowControllerButton_Click(object sender, RoutedEventArgs e)
         {
-            string message = "Hello";
-            server = "192.168.1.113";
-            try
-            {
-                // Create a TcpClient.
-                // Note, for this client to work you need to have a TcpServer
-                // connected to the same address as specified by the server, port
-                // combination.
-                TcpClient client = new TcpClient(server, port);
-
-                // Translate the passed message into ASCII and store it as a Byte array.
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
-
-                // Get a client stream for reading and writing.
-                NetworkStream stream = client.GetStream();
-
-                // Send the message to the connected TcpServer.
-                stream.Write(data, 0, data.Length);
-
-                Console.WriteLine("Sent: {0}", message);
-
-                // Receive the TcpServer.response.
-
-                // Buffer to store the response bytes.
-                data = new Byte[256];
-
-                // String to store the response ASCII representation.
-                String responseData = String.Empty;
-
-                // Read the first batch of the TcpServer response bytes.
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                MessageBox.Show("Received: " + responseData);
-
-            }
-            catch (ArgumentNullException e)
-            {
-                Console.WriteLine("ArgumentNullException: {0}", e);
-            }
-            catch (SocketException e)
-            {
-                Console.WriteLine("SocketException: {0}", e);
-            }
+            this.networkLinkAdapter.SendMessage("Bla");
         }
     }
 }

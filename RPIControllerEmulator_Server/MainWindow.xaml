@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RPIControllerEmulator_Server"
         mc:Ignorable="d"
-        Title="ControllerEmulator" Height="240" Width="800" Background="#FFCACCF1">
+        Title="ControllerEmulator" Height="240" Width="850" Background="#FFCACCF1">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="71*"/>
@@ -16,7 +16,7 @@
         <RadioButton x:Name="uartRadioButton" Content="UART" Margin="200,25,0,0"  Style="{StaticResource RadioButtonStyle}" RenderTransformOrigin="0.75,2.211"/>
         <RadioButton x:Name="bluetootRadioButton" Content="Bluetooth" Margin="66.266,25,0,0"  Style="{StaticResource RadioButtonStyle}" Grid.Column="1"/>
         <RadioButton x:Name="networkRadioButton" Content="Network" Margin="266.266,25,0,0" Style="{StaticResource RadioButtonStyle}" Width="130" Grid.Column="1"/>
-        <Label x:Name="connectionStatusLabel" Content="Connection status: Disconnected" FontSize="15" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="connectionStatusLabel" Content="Connection status: Disconnected" FontSize="15" HorizontalAlignment="Left" Width="550"  Margin="10,60,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
         <Button x:Name="ConnectButton"
             Content="Connect"
             Click="ConnectButton_Click"
@@ -35,7 +35,7 @@
         <RadioButton Content="Custom" Margin="336.266,110,0,0" Style="{StaticResource RadioButtonStyle}" Width="130" Grid.Column="1"/>
         <Button x:Name="ShowControllerButton"
             Content="Show Controller"
-                
+            Click="ShowControllerButton_Click"
             FontSize="20"
             FontWeight="Bold"
             HorizontalAlignment="Center"
