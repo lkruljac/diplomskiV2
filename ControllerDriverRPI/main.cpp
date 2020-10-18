@@ -59,7 +59,7 @@ int main(int argc, char** argv)
         }
             
         default:
-            printf("Something went wrong with connection type\n");
+            printf("\nSomething went wrong with connection type\n");
             exit(1);
             break;
     }
