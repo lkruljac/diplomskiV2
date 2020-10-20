@@ -32,12 +32,11 @@ namespace RPIControllerEmulator_Server.ViewModel
                 case ConnectionTypes.Network:
                     {
                         NetworkConfigurationWindow window = new NetworkConfigurationWindow();
-                        window.Show();
+                        window.ShowDialog();
                         string ip = window.getIP();
                         int port = window.getPort();
-
                         NetworkLinkAdapter adapter = new NetworkLinkAdapter();
-                        //adapter.Connect(ip, port);
+                        adapter.Connect(ip, port);
                         connection = adapter;
                         return true;
                        
