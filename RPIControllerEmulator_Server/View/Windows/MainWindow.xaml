@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RPIControllerEmulator_Server"
         mc:Ignorable="d"
-        Title="ControllerEmulator" Height="240" Width="850" Background="#FFCACCF1">
+        Title="ControllerEmulator" Height="240" Width="850" Background="#FFFF">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="71*"/>
@@ -13,9 +13,9 @@
         </Grid.ColumnDefinitions>
         <!--- Connection -->
         <Label Content="Connection type:" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="uartRadioButton" GroupName="connectionType" Content="UART" Margin="200,25,0,0"  Style="{StaticResource RadioButtonStyle}" RenderTransformOrigin="0.75,2.211"/>
-        <RadioButton x:Name="bluetootRadioButton" GroupName="connectionType" Content="Bluetooth" Margin="66.266,25,0,0"  Style="{StaticResource RadioButtonStyle}" Grid.Column="1"/>
-        <RadioButton x:Name="networkRadioButton" GroupName="connectionType" Content="Network" Margin="266.266,25,0,0" Style="{StaticResource RadioButtonStyle}" Width="130" Grid.Column="1"/>
+        <RadioButton x:Name="uartRadioButton" Checked="ConnectionTypeRadioButton_Checked" GroupName="connectionType" Content="UART" Margin="200,25,0,0"  Style="{StaticResource RadioButtonStyle}" RenderTransformOrigin="0.75,2.211"/>
+        <RadioButton x:Name="bluetootRadioButton"  Checked="ConnectionTypeRadioButton_Checked" GroupName="connectionType" Content="Bluetooth" Margin="66.266,25,0,0"  Style="{StaticResource RadioButtonStyle}" Grid.Column="1"/>
+        <RadioButton x:Name="networkRadioButton"  Checked="ConnectionTypeRadioButton_Checked" GroupName="connectionType" Content="Network" Margin="266.266,25,0,0" IsChecked="True"  Style="{StaticResource RadioButtonStyle}" Width="130" Grid.Column="1"/>
         <Label x:Name="connectionStatusLabel"  Content="Connection status: Disconnected" FontSize="15" HorizontalAlignment="Left" Width="550"  Margin="10,60,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" />
         <Button x:Name="ConnectButton"
             Content="Connect"
@@ -29,11 +29,12 @@
         />
         <!-- Controler type -->
         <Label Content="Controller type:" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="keyboard_RadioButton" GroupName="controllerType" Content="Keyboard" Margin="200,110,0,0"  Style="{StaticResource RadioButtonStyle}"/>
-        <RadioButton x:Name="joystic_RadioButton" GroupName="controllerType" Content="Joystic" Margin="66.266,110,0,0"  Style="{StaticResource RadioButtonStyle}" Grid.Column="1"/>
-        <RadioButton x:Name="remote_RadioButton" GroupName="controllerType" Content="Remote" Margin="196.266,110,0,0" Style="{StaticResource RadioButtonStyle}" Width="130" Grid.Column="1"/>
-        <RadioButton x:Name="custom_RadioButton" GroupName="controllerType" Content="Custom" Margin="336.266,110,0,0" Style="{StaticResource RadioButtonStyle}" Width="130" Grid.Column="1"/>
+        <RadioButton x:Name="keyboard_RadioButton"  Checked="ControllerTypeRadioButton_Checked" GroupName="controllerType" Content="Keyboard" Margin="200,110,0,0" IsChecked="True"  Style="{StaticResource RadioButtonStyle}"/>
+        <RadioButton x:Name="joystic_RadioButton" Checked="ControllerTypeRadioButton_Checked" GroupName="controllerType" Content="Joystic" Margin="66.266,110,0,0"  Style="{StaticResource RadioButtonStyle}" Grid.Column="1"/>
+        <RadioButton x:Name="remote_RadioButton" Checked="ControllerTypeRadioButton_Checked" GroupName="controllerType" Content="Remote" Margin="196.266,110,0,0" Style="{StaticResource RadioButtonStyle}" Width="130" Grid.Column="1"/>
+        <RadioButton x:Name="custom_RadioButton" Checked="ControllerTypeRadioButton_Checked" GroupName="controllerType" Content="Custom" Margin="336.266,110,0,0" Style="{StaticResource RadioButtonStyle}" Width="130" Grid.Column="1"/>
         <Button x:Name="ShowControllerButton"
+            IsEnabled="False"
             Content="Show Controller"
             Click="ShowControllerButton_Click"
             FontSize="20"

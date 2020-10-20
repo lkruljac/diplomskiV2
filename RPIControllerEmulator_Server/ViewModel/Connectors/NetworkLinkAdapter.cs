@@ -8,10 +8,12 @@ using System.IO;
 using System.Net;
 using System.Windows;
 
-namespace RPIControllerEmulator_Server.ViewModel
+using RPIControllerEmulator_Server.Model;
+
+namespace RPIControllerEmulator_Server.ViewModel.Connectors
 {
-    public class NetworkLinkAdapter : Sender
-    {
+    public class NetworkLinkAdapter : Connection
+    { 
         public NetworkLinkAdapter()
         {
             this.status = "Disconnected";
@@ -20,10 +22,13 @@ namespace RPIControllerEmulator_Server.ViewModel
         private string status;
         private NetworkStream stream;
         
-        public string GetStatus()
+        public string getStatus()
         {
             return this.status;
         }
+
+        
+        
         public override void SendMessage(string message)
         {
             // Translate the passed message into ASCII and store it as a Byte array.
@@ -34,8 +39,9 @@ namespace RPIControllerEmulator_Server.ViewModel
             
             Console.WriteLine("Sent: {0}", message);
         }
+        
 
-        public void Connect(string server, Int32 port)
+        public bool Connect(string server, Int32 port)
         {
             try
             {
@@ -75,11 +81,14 @@ namespace RPIControllerEmulator_Server.ViewModel
             catch (ArgumentNullException e)
             {
                 Console.WriteLine("ArgumentNullException: {0}", e);
+                return false;
             }
             catch (SocketException e)
             {
                 Console.WriteLine("SocketException: {0}", e);
+                return false;
             }
+            return true;
 
         }
 

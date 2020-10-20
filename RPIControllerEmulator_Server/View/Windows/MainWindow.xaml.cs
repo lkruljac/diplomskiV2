@@ -17,8 +17,9 @@ using InTheHand.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
 using System.Net;
-using Windows.Networking.Connectivity;
-using RPIControllerEmulator_Server.src;
+
+using RPIControllerEmulator_Server.ViewModel;
+using RPIControllerEmulator_Server.Model.Enumerations;
 
 namespace RPIControllerEmulator_Server
 {
@@ -27,81 +28,73 @@ namespace RPIControllerEmulator_Server
     /// </summary>
     public partial class MainWindow : Window
     {
+        Main main;
+        
+        ConnectionTypes connectionType;
+        ControllerTypes controllerType;
+
         public MainWindow()
         {
             InitializeComponent();
-            networkRadioButton.IsChecked = true;
-            keyboard_RadioButton.IsChecked = true;
+            main = new Main();
         }
 
-        private NetworkLinkAdapter networkLinkAdapter = null;
+
 
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (uartRadioButton.IsChecked == true)
+            if (main.Connect(connectionType))
             {
+                ShowControllerButton.IsEnabled = true;
             }
-            else if (bluetootRadioButton.IsChecked == true)
-            {
-  
-                ConnectBluetooth();
-            }
-            else if (networkRadioButton.IsChecked == true)
-            {
-                ConnectNetwork();
-            }
-            else
-            {
-                MessageBox.Show("Connection type is not selected", "Unselected option", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            
         }
         
-        private void ConnectNetwork()
-        {
-            NetworkConfigurationWindow networkConfigurationWindow = new NetworkConfigurationWindow();
-            networkConfigurationWindow.ShowDialog();
-            this.networkLinkAdapter = new NetworkLinkAdapter();
-            this.networkLinkAdapter.Connect(networkConfigurationWindow.getIP(), networkConfigurationWindow.getPort());
-            if (networkLinkAdapter.getStatus() == "Connected")
-            {
-                connectionStatusLabel.Background = new SolidColorBrush(Color.FromRgb(100, 150, 30));
-                connectionStatusLabel.Content = "Connection status: Connected on ip " + networkConfigurationWindow.getIP();
-                connectionStatusLabel.Content += ", on port " + networkConfigurationWindow.getPort();
-            }
-        }
-
-        private void ConnectBluetooth()
-        {
-
-        }
-
         private void ShowControllerButton_Click(object sender, RoutedEventArgs e)
         {
-            if (keyboard_RadioButton.IsChecked == true)
-            {
+            main.ShowController(controllerType);
+        }
 
-                VirtualKeyboard virtualKeyboard = new VirtualKeyboard();
-                virtualKeyboard.setLinkAdapter(networkLinkAdapter);
-                virtualKeyboard.Show();
-            }
-            else if (joystic_RadioButton.IsChecked == true)
+        private void ConnectionTypeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton rb = (RadioButton)sender;
+            
+            if(rb.Content.ToString() == "Network")
             {
-
+                connectionType = ConnectionTypes.Network;
             }
-            else if (remote_RadioButton.IsChecked == true)
+            else if (rb.Content.ToString() == "UART")
             {
-
+                connectionType = ConnectionTypes.UART;
             }
-            else if (custom_RadioButton.IsChecked == true)
+            else if (rb.Content.ToString() == "Bluetooth")
             {
-                
-            }
-            else
-            {
-                MessageBox.Show("Controller type is not selected", "Unselected option", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                connectionType = ConnectionTypes.Bluetooth;
             }
         }
+
+        private void ControllerTypeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton rb = (RadioButton)sender;
+
+            if (rb.Content.ToString() == "Keyboard")
+            {
+                controllerType = ControllerTypes.Keyboard;
+            }
+            else if (rb.Content.ToString() == "Joystic")
+            {
+                controllerType = ControllerTypes.Joystick;
+            }
+            else if (rb.Content.ToString() == "Remote")
+            {
+                controllerType = ControllerTypes.Other;
+            }
+            else if (rb.Content.ToString() == "Custom")
+            {
+                controllerType = ControllerTypes.Other;
+            }
+        }
+
+
     }
 }

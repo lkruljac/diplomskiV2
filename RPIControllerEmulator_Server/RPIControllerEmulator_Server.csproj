@@ -54,9 +54,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Windows">
-      <HintPath>..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.18362.0\Windows.winmd</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -66,11 +63,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="src\NetworkLinkAdapter.cs" />
-    <Compile Include="src\Sender.cs" />
-    <Compile Include="View\Windows\VirtualKeyboard.xaml.cs">
+    <Compile Include="Model\Connection.cs" />
+    <Compile Include="Model\Controller.cs" />
+    <Compile Include="Model\Enumerations\ConnectionTypes.cs" />
+    <Compile Include="Model\Enumerations\ControllerTypes.cs" />
+    <Compile Include="ViewModel\Connectors\NetworkLinkAdapter.cs" />
+    <Compile Include="ViewModel\Controllers\Joystick.cs" />
+    <Compile Include="ViewModel\Controllers\Keyboard.cs" />
+    <Compile Include="ViewModel\Main.cs" />
+    <Compile Include="View\Windows\Controllers\VirtualJoystick.xaml.cs">
+      <DependentUpon>VirtualJoystick.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\Controllers\VirtualKeyboard.xaml.cs">
       <DependentUpon>VirtualKeyboard.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Windows\Controllers\VirtualJoystick.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -87,7 +97,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Windows\VirtualKeyboard.xaml">
+    <Page Include="View\Windows\Controllers\VirtualKeyboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,8 +132,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="ViewModel\" />
+    <Resource Include="View\Windows\Controllers\Joystick.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

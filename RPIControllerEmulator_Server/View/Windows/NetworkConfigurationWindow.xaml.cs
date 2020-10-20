@@ -21,24 +21,21 @@ namespace RPIControllerEmulator_Server
     {
         private int port = 54000;
         private string ip = "127.0.0.0";
-        public NetworkConfigurationWindow()
-        {
+
+        public NetworkConfigurationWindow(){
             InitializeComponent();
         }
 
-        private void ConnectButton(object sender, RoutedEventArgs e)
-        {
+        private void ConnectButton(object sender, RoutedEventArgs e){
             int.TryParse(portTextBox.Text, out port);
             ip = ipTextBox.Text;
             this.Close();
         }
 
-        public string getIP()
-        {
+        public string getIP(){
             return ip;
         }
-        public int getPort()
-        {
+        public int getPort(){
             return port;
         }
     }

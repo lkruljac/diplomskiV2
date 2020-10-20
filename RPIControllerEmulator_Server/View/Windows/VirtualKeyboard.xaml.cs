@@ -1,4 +1,4 @@
-﻿using RPIControllerEmulator_Server.src;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Windows.ApplicationModel.VoiceCommands;
+using RPIControllerEmulator_Server.ViewModel;
 
 namespace RPIControllerEmulator_Server
 {
@@ -22,7 +23,7 @@ namespace RPIControllerEmulator_Server
     public partial class VirtualKeyboard : Window
     {
         private Sender linkAdapter;
-        public void setLinkAdapter(Sender adapter)
+        public void SetLinkAdapter(Sender adapter)
         {
             this.linkAdapter = adapter;
         }

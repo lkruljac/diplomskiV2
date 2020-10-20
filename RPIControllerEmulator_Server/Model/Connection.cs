@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RPIControllerEmulator_Server.ViewModel
+using System.Windows;
+
+namespace RPIControllerEmulator_Server.Model
 {
-    public class Sender
+    public class Connection
     {
-        public Sender()
-        {
-
-        }
-
         public virtual void SendMessage(string message)
         {
-
+            MessageBox.Show("It works, sended " + message);
         }
+        
+        
+
     }
 }
