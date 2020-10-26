@@ -11,6 +11,9 @@
     <ClCompile Include="globals.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="inputDevice.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -28,6 +31,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="globals.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="inputDevice.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

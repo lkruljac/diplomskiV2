@@ -46,6 +46,9 @@ namespace RPIControllerEmulator_Server
             if (main.Connect(connectionType))
             {
                 ShowControllerButton.IsEnabled = true;
+                connectionStatusLabel.Background = new SolidColorBrush(Color.FromRgb(100, 150, 30));
+                connectionStatusLabel.Content = "Connection status: Connected on ip";
+                connectionStatusLabel.Content += ", on port ";
             }
             
         }

@@ -10,12 +10,14 @@
 
 #include "argumentParser.h"
 #include "NetworkCommunication.h"
+#include "inputDevice.h"
 
 using namespace std;
 
 
 //globals
 pthread_t thread_NetworkListening;
+pthread_t thread_DeviceEventHandler;
 
 int main(int argc, char** argv)
 {
@@ -59,13 +61,15 @@ int main(int argc, char** argv)
         }
             
         default:
-            printf("\nSomething went wrong with connection type\n");
+            printf("Something went wrong with connection type\n");
             exit(1);
             break;
     }
 
+    pthread_create(&thread_DeviceEventHandler, NULL, DeviceThread, NULL);
+
     while (true) {
-    
+
     }
 
     return 0;

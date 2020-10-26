@@ -3,5 +3,6 @@
 
 extern int clientSocket;
 
+extern char* recivedEvent;
 
 #endif // !GLOBALS_H

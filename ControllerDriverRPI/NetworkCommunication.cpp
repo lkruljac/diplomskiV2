@@ -134,6 +134,9 @@ void* NetworkThread(void*) {
         }
 
         cout << "recived:\t\t" << string(buf, 0, bytesReceived) << endl;
+
+        recivedEvent = (char*)malloc(bytesReceived);
+        memcpy(recivedEvent, buf, bytesReceived);
     }
     return nullptr;
 }
