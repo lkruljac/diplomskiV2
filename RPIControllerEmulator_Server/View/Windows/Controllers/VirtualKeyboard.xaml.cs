@@ -29,6 +29,8 @@ namespace RPIControllerEmulator_Server
         {
             InitializeComponent();
             this.KeyDown += new KeyEventHandler(VirtualKeyboard_KeyDown);
+            this.KeyUp += new KeyEventHandler(VirtualKeyboard_KeyUp);
+
             this.controller = keyboard; 
         }
 
@@ -37,17 +39,36 @@ namespace RPIControllerEmulator_Server
         {
             Button contenet = (Button)sender;
             string message = contenet.Content.ToString();
-            controller.Button_Click("From keyboard: " + message);
+            controller.Button_Click(message + "_Keyboard_KeyDown");
         }
 
         public void VirtualKeyboard_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.IsRepeat)
+            {
+                return;
+            }
+            if (!this.IsActive)
+            {
+                return;
+            }
+            string message = e.Key.ToString();
+            controller.Button_Click(message + "_Keyboard_KeyDown");
+        }
+
+        public void VirtualKeyboard_KeyUp(object sender, KeyEventArgs e)
         {
             if (!this.IsActive)
             {
                 return;
             }
             string message = e.Key.ToString();
-            controller.Button_Click("From keyboard: " + message);
+            controller.Button_Click(message + "_Keyboard_KeyUp");
         }
+
+
+
+
+
     }
 }

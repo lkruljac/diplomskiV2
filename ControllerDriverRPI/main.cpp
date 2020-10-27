@@ -25,8 +25,7 @@ int main(int argc, char** argv)
     ARGUMENTS arguments;
     ArgpParser(argc, argv, &arguments);
     argumentDump(arguments);
-    
-    //main starts here
+   
     if (arguments.versionFlag) {
         printf("RPI (virtual) controller driver", argp_program_version);
         exit(0);
@@ -50,12 +49,24 @@ int main(int argc, char** argv)
         case(network):
         {
             int port = 54000;
-            printf("Starting Network communication!\n");
-            printf("To set connection please use:\n\tIP: %s,\n\tport: %d\n\n", getLocalIp(arguments.networkAdapter), port);
-            if (NetworkCommunication_Start((uint16_t)port) == 0) {
-                printf("Communication over network established, starting NetworkListeningThread!\n\n");
+            char *ip;
+            ip = strdup(getLocalIp(arguments.networkAdapter));
+
+            if (strcmp(ip, "0.0.0.0") == 0) {
+                printf("There is no established connection on network Adapter: \"%s\"\n", arguments.networkAdapter);
+                exit(1);
             }
 
+            printf("Starting Network communication!\n");
+            printf("To set connection please use:\n\tIP: %s,\n\tport: %d\n\n", ip, port);
+            if (NetworkCommunication_Start((uint16_t)port) == 0) {
+                printf("Communication over network established!\n");
+            }     
+            else {
+                printf("Can not establish connection!\n");
+                exit(1);
+            }
+            printf("\nStarting NetworkListeningThread!\n\n");
             pthread_create(&thread_NetworkListening, NULL, NetworkThread, NULL);
             break;
         }
@@ -67,7 +78,7 @@ int main(int argc, char** argv)
     }
 
     pthread_create(&thread_DeviceEventHandler, NULL, DeviceThread, NULL);
-
+    printf("Pres ctrl + c to terminate...\n");
     while (true) {
 
     }

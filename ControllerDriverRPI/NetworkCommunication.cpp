@@ -111,8 +111,6 @@ int NetworkCommunication_Start(uint16_t port) {
 void* NetworkThread(void*) {
    
     printf("Network thread started:\n");
-    
-    
     // While loop: accept message
     char buf[4096];
     while (true)
@@ -133,10 +131,11 @@ void* NetworkThread(void*) {
             break;
         }
 
-        cout << "recived:\t\t" << string(buf, 0, bytesReceived) << endl;
+        //cout << "recived:\t\t" << string(buf, 0, bytesReceived) << endl;
 
-        recivedEvent = (char*)malloc(bytesReceived);
+        recivedEvent = (char*)malloc(bytesReceived+1);
         memcpy(recivedEvent, buf, bytesReceived);
+        recivedEvent[bytesReceived] = '\0';
     }
     return nullptr;
 }

@@ -22,6 +22,7 @@ void KeyPressed(int fd_key_emulator, int code);
 void KeyReleased(int fd_key_emulator, int code);
 
 void* DeviceThread(void*);
-
+void ParseEvent(char* event, char* key, char* device, int* type);
+__u16 GetRealKeyCode(char* key, char* deviceType);
 #endif
 

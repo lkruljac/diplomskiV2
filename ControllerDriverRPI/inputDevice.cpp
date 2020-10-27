@@ -74,7 +74,7 @@ void KeyPressed(int fd_key_emulator, int code) {
 
     // key press event for 'a'
     key_input_event.type = EV_KEY;
-    key_input_event.code = code;
+    key_input_event.code = (__u16) code;
     key_input_event.value = 1;
 
     // now write to the file descriptor
@@ -105,7 +105,7 @@ void KeyReleased(int fd_key_emulator, int code) {
 
     // key release event for 'a'
     key_input_event.type = EV_KEY;
-    key_input_event.code = code;
+    key_input_event.code = (__u16)code;
     key_input_event.value = 0;
 
     // now write to the file descriptor
@@ -127,13 +127,28 @@ void KeyReleased(int fd_key_emulator, int code) {
     }
 }
 
+void ParseEvent(char *event, char* key, char* deviceType, int* eventType) {
+    sscanf(event, "%s_%s_%d", key, deviceType, eventType);
+}
 
 void* DeviceThread(void*) {
-    
+    char key[10];
+    char deviceType[10];
+    int eventType;
+    int fd_key_emulator = InitInputDevice();
+
+
+
     while (true) {
         if (recivedEvent != NULL) {
-
-            printf("Device got: %s\n", recivedEvent);
+            //printf("Device got: %s\n", recivedEvent);
+            ParseEvent(recivedEvent, key, deviceType, &eventType);
+            if (eventType) {
+                KeyPressed(fd_key_emulator, KEY_A);
+            }
+            else {
+                KeyReleased(fd_key_emulator, KEY_A);
+            }
             free(recivedEvent);
             recivedEvent = NULL;
         }
