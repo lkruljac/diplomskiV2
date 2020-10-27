@@ -39,7 +39,7 @@ namespace RPIControllerEmulator_Server
         {
             Button contenet = (Button)sender;
             string message = contenet.Content.ToString();
-            controller.Button_Click(message + "_Keyboard_KeyDown");
+            controller.Button_Click(message + "_Keyboard_1");
         }
 
         public void VirtualKeyboard_KeyDown(object sender, KeyEventArgs e)
@@ -53,7 +53,7 @@ namespace RPIControllerEmulator_Server
                 return;
             }
             string message = e.Key.ToString();
-            controller.Button_Click(message + "_Keyboard_KeyDown");
+            controller.Button_Click(message + "_Keyboard_1");
         }
 
         public void VirtualKeyboard_KeyUp(object sender, KeyEventArgs e)
@@ -63,7 +63,7 @@ namespace RPIControllerEmulator_Server
                 return;
             }
             string message = e.Key.ToString();
-            controller.Button_Click(message + "_Keyboard_KeyUp");
+            controller.Button_Click(message + "_Keyboard_0");
         }
 
 
