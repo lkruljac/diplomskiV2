@@ -40,8 +40,14 @@ namespace RPIControllerEmulator_Server
             Button contenet = (Button)sender;
             string message = contenet.Content.ToString();
             controller.Button_Click(message + "_Keyboard_1");
+        } 
+        public void KeyboardButton_MouseLeftButtonUp(object sender, RoutedEventArgs e)
+        {
+            Button contenet = (Button)sender;
+            string message = contenet.Content.ToString();
+            controller.Button_Click(message + "_Keyboard_0");
         }
-
+       
         public void VirtualKeyboard_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.IsRepeat)

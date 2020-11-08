@@ -156,8 +156,6 @@ void* DeviceThread(void*) {
     int eventType;
     int fd_key_emulator = InitInputDevice();
 
-
-
     while (true) {
         if (recivedEvent != NULL) {
             printf("Device got: %s\t", recivedEvent);

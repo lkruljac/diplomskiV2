@@ -309,7 +309,8 @@
                 Grid.Row="3"
                 Grid.Column="4"/>
         <Button x:Name="KeyboardButton_F"
-                Click="KeyboardButton_Click"
+                MouseLeftButtonDown="KeyboardButton_Click"
+                MouseLeftButtonUp="KeyboardButton_MouseLeftButtonUp"
                 Content="F"
                 Style="{StaticResource keyboardButtonsStyle}"
                 Grid.Row="3"

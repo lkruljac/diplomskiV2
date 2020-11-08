@@ -67,6 +67,8 @@
     <Compile Include="Model\Controller.cs" />
     <Compile Include="Model\Enumerations\ConnectionTypes.cs" />
     <Compile Include="Model\Enumerations\ControllerTypes.cs" />
+    <Compile Include="Model\Enumerations\DeviceTypes.cs" />
+    <Compile Include="Model\Message.cs" />
     <Compile Include="ViewModel\Connectors\NetworkLinkAdapter.cs" />
     <Compile Include="ViewModel\Controllers\Joystick.cs" />
     <Compile Include="ViewModel\Controllers\Keyboard.cs" />
@@ -135,6 +137,9 @@
     <Resource Include="View\Windows\Controllers\Joystick.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\Enumerations\EventTypes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
