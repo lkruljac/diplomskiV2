@@ -29,15 +29,13 @@ namespace RPIControllerEmulator_Server.ViewModel.Connectors
 
         
         
-        public override void SendMessage(string message)
+        public override void SendMessage(string stringMessage)
         {
-            // Translate the passed message into ASCII and store it as a Byte array.
-            Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
-            
+            byte[] data = new byte[12];
+            data = Helper.ParseMessage(stringMessage);
             // Send the message to the connected TcpServer.
             this.stream.Write(data, 0, data.Length);
-            
-            Console.WriteLine("Sent: {0}", message);
+            Console.WriteLine("Sent: {0}", stringMessage);
         }
         
 

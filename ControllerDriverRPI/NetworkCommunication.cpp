@@ -112,13 +112,13 @@ void* NetworkThread(void*) {
    
     printf("Network thread started:\n");
     // While loop: accept message
-    char buf[4096];
+    short int buf[3];
     while (true)
     {
-        memset(buf, 0, 4096);
+        memset(buf, 0, 6);
 
         // Wait for client to send data
-        int bytesReceived = recv(clientSocket, buf, 4096, 0);
+        int bytesReceived = recv(clientSocket, buf, 6, 0);
         if (bytesReceived == -1)
         {
             cerr << "Error in recv(). Quitting" << endl;
@@ -131,11 +131,10 @@ void* NetworkThread(void*) {
             break;
         }
 
-        //cout << "recived:\t\t" << string(buf, 0, bytesReceived) << endl;
-
-        recivedEvent = (char*)malloc(bytesReceived+1);
-        memcpy(recivedEvent, buf, bytesReceived);
-        recivedEvent[bytesReceived] = '\0';
+        memcpy(&msg.code, buf, 2);
+        memcpy(&msg.deviceType, &buf[1], 2);
+        memcpy(&msg.eventType, &buf[2], 2);
+        recivedEventFlag = 1;
     }
     return nullptr;
 }

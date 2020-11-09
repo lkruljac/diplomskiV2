@@ -1,6 +1,8 @@
 #include "globals.h"
 #include <stdlib.h>
 
+
 int clientSocket;
 
-char* recivedEvent;
+bool recivedEventFlag;
+Message msg;

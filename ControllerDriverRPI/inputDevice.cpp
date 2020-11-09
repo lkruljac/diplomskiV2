@@ -127,49 +127,25 @@ void KeyReleased(int fd_key_emulator, int code) {
     }
 }
 
-void ParseEvent(char *event, char* key, char* deviceType, int* eventType) {
-    sscanf(event, "%c_Keyboard_%d", key, deviceType, eventType);
-}
 
-__u16 GetRealKeyCode(char* key, char* deviceType) {
-    if (strcmp(key, "CAPS") == 0) {
-        return KEY_CAPSLOCK;
-    }
-    if (strcmp(key, "Q") == 0) {
-        return KEY_Q;
-    }
-    if (strcmp(key, "W") == 0) {
-        return KEY_W;
-    }
-    if (strcmp(key, "E") == 0) {
-        return KEY_E;
-    }
-    if (strcmp(key, "R") == 0) {
-        return KEY_E;
-    }
-    return KEY_SPACE;
-}
 
 void* DeviceThread(void*) {
-    char key[10];
-    char deviceType[10] = "Keyboard";
-    int eventType;
     int fd_key_emulator = InitInputDevice();
-
     while (true) {
-        if (recivedEvent != NULL) {
-            printf("Device got: %s\t", recivedEvent);
-            ParseEvent(recivedEvent, key, deviceType, &eventType);
-            printf("Parsed: deviceType: %s, keyCode: %s, EvenetType: %d\n", deviceType, key, eventType);
-            if (!eventType) {
-                KeyPressed(fd_key_emulator, GetRealKeyCode(key, deviceType));
-                KeyReleased(fd_key_emulator, GetRealKeyCode(key, deviceType));
+        if (recivedEventFlag) {
+            printf("Code:%d\tEventType:%d\tDeviceType:\t%d\n", msg.code, msg.eventType, msg.deviceType);
+            
+            //Pressed
+            if (msg.eventType == 0) {
+                KeyPressed(fd_key_emulator, msg.code);
             }
             else {
-                KeyReleased(fd_key_emulator, GetRealKeyCode(key, deviceType));
+                KeyReleased(fd_key_emulator, msg.code);
             }
-            free(recivedEvent);
-            recivedEvent = NULL;
+            
+            recivedEventFlag = 0;
         }
     }
+
+
 }

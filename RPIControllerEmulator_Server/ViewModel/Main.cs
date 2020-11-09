@@ -39,8 +39,6 @@ namespace RPIControllerEmulator_Server.ViewModel
                         adapter.Connect(ip, port);
                         connection = adapter;
                         return true;
-                       
-                        break;
                     }
 
                 case ConnectionTypes.UART:

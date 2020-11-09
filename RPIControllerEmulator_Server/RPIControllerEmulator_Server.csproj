@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DarrenLee">
@@ -68,7 +70,8 @@
     <Compile Include="Model\Enumerations\ConnectionTypes.cs" />
     <Compile Include="Model\Enumerations\ControllerTypes.cs" />
     <Compile Include="Model\Enumerations\DeviceTypes.cs" />
-    <Compile Include="Model\Message.cs" />
+    <Compile Include="Model\Enumerations\KeyboardCodes.cs" />
+    <Compile Include="ViewModel\Connectors\Helper.cs" />
     <Compile Include="ViewModel\Connectors\NetworkLinkAdapter.cs" />
     <Compile Include="ViewModel\Controllers\Joystick.cs" />
     <Compile Include="ViewModel\Controllers\Keyboard.cs" />
