@@ -34,7 +34,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Button x:Name="KeyboardButton_Esc"
-                Content="Esc"
+                Content="ESC"
                 Click="KeyboardButton_Click"
                 Style="{StaticResource keyboardButtonsStyle}"
                 Grid.Row="0"
@@ -100,7 +100,7 @@
                 Grid.Row="0"
                 Grid.Column="12"/>
         <Button x:Name="KeyboardButton_F11"
-                Content="F1"
+                Content="F11"
                 Click="KeyboardButton_Click"
                 Style="{StaticResource keyboardButtonsStyle}"
                 Grid.Row="0"
