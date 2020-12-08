@@ -8,6 +8,7 @@ using RPIControllerEmulator_Server.ViewModel.Controllers;
 using RPIControllerEmulator_Server.ViewModel.Connectors;
 using RPIControllerEmulator_Server.Model;
 using RPIControllerEmulator_Server.Model.Enumerations;
+using RPIControllerEmulator_Server.View.Windows;
 
 namespace RPIControllerEmulator_Server.ViewModel
 {
@@ -25,6 +26,9 @@ namespace RPIControllerEmulator_Server.ViewModel
             {
                 case ConnectionTypes.Bluetooth:
                     {
+                        BluetoothLinkAdapter adapter = new BluetoothLinkAdapter();
+                        BluetoothConfigurationWindow configWindow = new BluetoothConfigurationWindow(adapter);
+                        configWindow.ShowDialog();
 
                         break;
                     }
