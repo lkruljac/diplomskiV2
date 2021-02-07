@@ -47,6 +47,8 @@ namespace RPIControllerEmulator_Server.ViewModel.Connectors
             localComponent.DiscoverDevicesProgress += new EventHandler<DiscoverDevicesEventArgs>(component_DiscoverDevicesProgress);
             localComponent.DiscoverDevicesComplete += new EventHandler<DiscoverDevicesEventArgs>(component_DiscoverDevicesComplete);
             localComponent.DiscoverDevicesAsync(255, true, true, true, true, null);
+
+
         }
 
 
@@ -67,14 +69,33 @@ namespace RPIControllerEmulator_Server.ViewModel.Connectors
         public void Pair(BluetoothDeviceInfo targetDevice)
         { 
            BluetoothSecurity.PairRequest(targetDevice.DeviceAddress, null);
+
+
+            BluetoothEndPoint ep = new BluetoothEndPoint(addr, BluetoothService.SerialPort);
+            bool t = false;
+            BluetoothSecurity.PairRequest(addr, "1234");
+            BluetoothClient cli = new BluetoothClient();
+            cli.Connect(ep);
+            t = cli.Connected;
+
+
+            string[] ports = SerialPort.GetPortNames();
+
+            foreach (string s in ports)
+            {
+                cboPorts.Items.Add(s);
+            }
         }
 
         public void Connect(BluetoothDeviceInfo device)
         {
             localClient.SetPin(null);
-            localClient.Connect(device.DeviceAddress, BluetoothService.SerialPort);
+            localClient.BeginConnect(device.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), device);
+            BluetoothEndPoint remoteEP = new BluetoothEndPoint(device.DeviceAddress, BluetoothService.SerialPort);
+            BluetoothClient client = new BluetoothClient();
+            client.Connect(remoteEP);
+            localClient.Connect(remoteEP);
             this.Stream = localClient.GetStream();
-            SendMessage("KEY_" + 2 + "#Keyboard#Released");
         }
 
         // callback
