@@ -15,7 +15,7 @@
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" 
+        <Label Grid.Row="1" 
                VerticalAlignment="Center"
                HorizontalAlignment="Stretch"
                Content="This is label"
