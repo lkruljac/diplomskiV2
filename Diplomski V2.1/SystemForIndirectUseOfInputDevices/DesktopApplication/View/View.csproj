@@ -108,5 +108,15 @@
   <ItemGroup>
     <Resource Include="Resource\remoter.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.csproj">
+      <Project>{2e4e3210-d603-4b1f-b425-b83d5c1b6cc5}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj">
+      <Project>{c7f10921-3bd2-41d8-b35a-a09949037f9f}</Project>
+      <Name>ViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

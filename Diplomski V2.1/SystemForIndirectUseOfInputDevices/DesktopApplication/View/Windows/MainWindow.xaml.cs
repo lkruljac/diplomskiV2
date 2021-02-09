@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using ViewModel;
 namespace SystemForIndirectUseOfInputDevices.DesktopApplication.View
 {
     /// <summary>
@@ -23,6 +23,7 @@ namespace SystemForIndirectUseOfInputDevices.DesktopApplication.View
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModel.MainWindowViewModel(this);
         }
     }
 }
