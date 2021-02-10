@@ -3,8 +3,10 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ViewModel.Controls
@@ -32,7 +34,14 @@ namespace ViewModel.Controls
             get { return _LabelContent; }
             set { _LabelContent = value; RaisePropertyChangedEvent("LabelContent");}
         }
+        
+        private string _StreamText;
 
+        public string StreamText
+        {
+            get { return _StreamText; }
+            set { _StreamText = value; RaisePropertyChangedEvent("StreamText"); }
+        }
 
         #endregion
 
@@ -50,11 +59,16 @@ namespace ViewModel.Controls
         public void ListAllConnectedDevices()
         {
             Devices = Services.Devices.GetAllDevices();
+            _SelectedIndex = 0;
         }
 
         private void OnSelectdIndexChanged()
         {
-            
+            StreamText += "hjhj";
+          
+         
+               
+         
         }
         #endregion
     }
