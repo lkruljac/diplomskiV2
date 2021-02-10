@@ -12,8 +12,9 @@ namespace ViewModel
 
     public class MainWindowViewModel : BaseViewModel
     {
-        private BaseViewModel _selectedViewModel;
-        public BaseViewModel SelectedViewModel
+        #region Properties
+        private BasePageViewModel _selectedViewModel;
+        public BasePageViewModel SelectedViewModel
         {
             get
             {
@@ -25,14 +26,17 @@ namespace ViewModel
                 RaisePropertyChangedEvent("SelectedViewModel");
             }
         }
-        
+       
         public Window MainWindow;
-
+        #endregion
+               
+        #region Constructor(s)
         public MainWindowViewModel(Window mainWindowInstance)
         {
-            SelectedViewModel = new MainPageViewModel();
+            SelectedViewModel = new MainPageViewModel(this);
+            SelectedViewModel.EnterPage();
             MainWindow = mainWindowInstance;
         }
-
+        #endregion
     }
 }

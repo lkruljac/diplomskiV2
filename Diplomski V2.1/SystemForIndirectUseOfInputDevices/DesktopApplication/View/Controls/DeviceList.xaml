@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="SystemForIndirectUseOfInputDevices.DesktopApplication.View.Controls.DeviceList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="640">
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Content="{Binding LabelContent}"
+            />
+        <ListView
+            Grid.Row="1"
+            ItemsSource="{Binding Devices}"
+            SelectedIndex="{Binding SelectedIndex}"
+            VerticalAlignment="Stretch"
+            >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn 
+                        Header="Device name"
+                        DisplayMemberBinding="{Binding Name}"
+                        Width="250"
+                        />
+                    <GridViewColumn 
+                        Header="ID"
+                        DisplayMemberBinding="{Binding Id}"
+                        Width="70"
+                        />
+                    <GridViewColumn 
+                        Header="Device type"
+                        DisplayMemberBinding="{Binding Type}"
+                        Width="200"
+                        />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</UserControl>

@@ -2,9 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View"
-             xmlns:ViewModels="clr-namespace:ViewModel.Pages;assembly=SystemForIndirectUseOfInputDevices.DesktopApplication.ViewModel"
+             xmlns:ViewModel="clr-namespace:ViewModel.Pages;assembly=SystemForIndirectUseOfInputDevices.DesktopApplication.ViewModel"
+             xmlns:Pages="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View.Pages"
              StartupUri="Windows/MainWindow.xaml">
+    
     <Application.Resources>
-         
+        
+        <DataTemplate DataType="{x:Type ViewModel:MainPageViewModel}">
+            <Pages:MainPage/>
+        </DataTemplate>
+
+        
     </Application.Resources>
 </Application>

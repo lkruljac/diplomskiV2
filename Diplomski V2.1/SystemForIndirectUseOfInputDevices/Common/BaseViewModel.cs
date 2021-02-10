@@ -17,9 +17,6 @@ namespace Common
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
-
-
-
     }
 }
 

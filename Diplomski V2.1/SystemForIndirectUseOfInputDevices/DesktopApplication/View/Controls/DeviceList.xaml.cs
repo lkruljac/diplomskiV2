@@ -12,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ViewModel.Pages;
 
-namespace SystemForIndirectUseOfInputDevices.DesktopApplication.View.Pages
+namespace SystemForIndirectUseOfInputDevices.DesktopApplication.View.Controls
 {
     /// <summary>
-    /// Interaction logic for MainPage.xaml
+    /// Interaction logic for DeviceList.xaml
     /// </summary>
-    public partial class MainPage : UserControl
+    public partial class DeviceList : UserControl
     {
-        public MainPage()
+        public DeviceList()
         {
             InitializeComponent();
         }

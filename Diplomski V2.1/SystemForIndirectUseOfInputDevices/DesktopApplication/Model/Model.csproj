@@ -7,7 +7,7 @@
     <ProjectGuid>{49D8EC6E-B70F-403F-81FE-F8204EFA130F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SystemForIndirectUseOfInputDevices.DesktopApplication.Model</RootNamespace>
+    <RootNamespace>Model</RootNamespace>
     <AssemblyName>SystemForIndirectUseOfInputDevices.DesktopApplication.Model</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,7 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.csproj">
+      <Project>{2e4e3210-d603-4b1f-b425-b83d5c1b6cc5}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
