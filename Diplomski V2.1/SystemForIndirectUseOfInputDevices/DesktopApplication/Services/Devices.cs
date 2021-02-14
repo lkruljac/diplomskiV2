@@ -15,45 +15,14 @@ namespace Services
         
         public static ObservableCollection<DeviceModel> GetAllDevices()
         {
-            ObservableCollection<DeviceModel> devices = new ObservableCollection<DeviceModel>();
-            ManagementObjectCollection collection;
-            
-            using (var searcher = new ManagementObjectSearcher(@"Select * From Win32_Keyboard"))
-                collection = searcher.Get();
-
-            foreach (ManagementObject device in collection)
+            ObservableCollection<DeviceModel> devices = new ObservableCollection<DeviceModel>
             {
-                var das = device.Properties;
-
-                devices.Add(new DeviceModel(
-                    (string)device.GetPropertyValue("Caption"),
-                    (string)device.GetPropertyValue("PNPDeviceID"),
-                    "Keyboard"
-                    ));
-             
-            }
-            collection.Dispose();
-
-            using (var searcher = new ManagementObjectSearcher(@"Select * From Win32_PointingDevice"))
-                collection = searcher.Get();
-
-            foreach (ManagementObject device in collection)
-            {
-                var das = device.Properties;
-
-                devices.Add(new DeviceModel(
-                    (string)device.GetPropertyValue("Caption"),
-                    (string)device.GetPropertyValue("PNPDeviceID"),
-                    "PointingDevice"
-                    ));
-
-            }
-            collection.Dispose();
-
-
-
+                new DeviceModel("All keyboards", null, null),
+                new DeviceModel("All mouses", null, null),
+                new DeviceModel("All joystick", null, null)
+            };
 
             return devices;
-        }
+        }       
     }
 }

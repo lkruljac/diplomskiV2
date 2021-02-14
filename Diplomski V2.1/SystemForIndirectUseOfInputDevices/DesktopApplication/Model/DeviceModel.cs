@@ -42,6 +42,7 @@ namespace Model
             Id = id;
             Type = type;
         }
+
         #endregion
     }
 }

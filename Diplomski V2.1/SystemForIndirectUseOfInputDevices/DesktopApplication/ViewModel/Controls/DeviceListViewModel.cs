@@ -42,7 +42,8 @@ namespace ViewModel.Controls
             get { return _StreamText; }
             set { _StreamText = value; RaisePropertyChangedEvent("StreamText"); }
         }
-
+        
+        static Thread listenerTheread;
         #endregion
 
         #region Constructor(s)
@@ -64,11 +65,13 @@ namespace ViewModel.Controls
 
         private void OnSelectdIndexChanged()
         {
-            StreamText += "hjhj";
-          
-         
-               
-         
+            listenerTheread?.Abort();
+            switch (_SelectedIndex)
+            {
+                case 0:
+                    listenerTheread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(Services.KeyboardHandler.OnKeyboardEvent);
+                    break;
+            }
         }
         #endregion
     }
