@@ -7,11 +7,11 @@ using Linearstar.Windows.RawInput;
 using Services.RawInput;
 namespace Services
 {
-    public class KeyboardHandler
+    public class KeyboardHandler : DeviceHandler
     {
-        public static void OnKeyboardEvent(RawInputData data)
+        public KeyboardHandler()
         {
-            Console.WriteLine(data);
+
         }
     }
 }

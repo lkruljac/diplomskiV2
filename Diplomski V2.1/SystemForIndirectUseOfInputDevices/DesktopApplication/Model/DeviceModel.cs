@@ -11,12 +11,12 @@ namespace Model
     {
         #region Properties
         private string _Name;
-
         public string Name
         {
             get { return _Name; }
             set { _Name = value; RaisePropertyChangedEvent("Name"); }
         }
+
 
         private string _Id;
         public string Id
@@ -24,11 +24,21 @@ namespace Model
             get { return _Id; }
             set { _Id = value; RaisePropertyChangedEvent("Id"); }
         }
+
+
         private string _Type;
         public string Type
         {
             get { return _Type; }
             set { _Type = value; RaisePropertyChangedEvent("Type"); }
+        }
+
+        private bool _IsSelected;
+
+        public bool IsSelected
+        {
+            get { return _IsSelected; }
+            set { _IsSelected = value; RaisePropertyChangedEvent("IsSelected"); }
         }
 
         #endregion

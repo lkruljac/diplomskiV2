@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using ViewModel.Controls;
 using System.ComponentModel;
 using System.Threading;
+using Linearstar.Windows.RawInput;
 
 namespace ViewModel.Pages
 {
@@ -17,7 +18,6 @@ namespace ViewModel.Pages
     {
         #region Properites
         private string _Title;
-
         public string Title
         {
             get { return _Title; }
@@ -32,85 +32,128 @@ namespace ViewModel.Pages
         }
 
 
-        private string _Text;
-
-        public string Text
+        private string _StreamOutputText;
+        public string StreamOutputText
         {
-            get { return _Text; }
-            set { _Text = value; RaisePropertyChangedEvent("Text"); }
+            get { return _StreamOutputText; }
+            set { _StreamOutputText = value; RaisePropertyChangedEvent("StreamOutputText"); }
         }
 
-      
+
+        private bool _IsStreamRuning;
+        public bool IsStreamRuning
+        {
+            get { return _IsStreamRuning; }
+            set 
+            { 
+                _IsStreamRuning = value; 
+                RaisePropertyChangedEvent("IsStreamRuning");
+                StartStreamCommand.RaiseCanExecuteChanged();
+                StopStreamCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private List<Thread> ListenerThreads;
 
         #endregion
+
 
 
         #region Constructor(s)
         public MainPageViewModel(MainWindowViewModel ownerWindow) : base(ownerWindow)
         {
             DeviceListVM = new DeviceListViewModel();
+            _IsStreamRuning = false;
         }
         #endregion
+
+
 
         #region Methods
         public override void EnterPage()
         {
             DeviceListVM.ListAllConnectedDevices();
-            BgWorker = new BackgroundWorker();
-            SetWorkerCallbacks(BgWorker);
-            RunWorker(BgWorker, null);
+       
         }
+
+        public void OnDeviceEvent(RawInputData message)
+        {
+            StreamOutputText += message+"\n";
+        }
+
+
         #endregion
 
 
 
-        #region Background worker implementation
+        #region Commands
 
-        public BackgroundWorker BgWorker { get; set; }
-
-
-        //Want this make somehow defult function - C# 8.0 enables it inside Interface, but...
-        public void SetWorkerCallbacks(BackgroundWorker worker)
+        private DelegateCommand _StartStreamCommand;
+        public DelegateCommand StartStreamCommand
         {
-            worker.DoWork += DoWork;
-            worker.WorkerReportsProgress = true;
-            worker.ProgressChanged += ProgressChanged;
-            worker.RunWorkerCompleted += OnWorkerFinish;
-        }
-        //Want this make somehow defult function - C# 8.0 enables it
-        public void RunWorker(BackgroundWorker worker, object beginingArgs)
-        {
-            OnBegining(beginingArgs);
-            worker.RunWorkerAsync();
-        }
-
-
-        public void OnBegining(object args)
-        {
-  
-        }
-
-        public void OnWorkerFinish(object sender, RunWorkerCompletedEventArgs e)
-        {
-
-        }
-
-        public void ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            Text = DeviceListVM.StreamText;
-        }
-
-        public void DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true)
+            get 
             {
-                
-                (sender as BackgroundWorker).ReportProgress(0, "Done.");
-                Thread.Sleep(200);
+                _StartStreamCommand ??= new DelegateCommand(new Action(StartStream), () => { return !IsStreamRuning; });
+                return _StartStreamCommand; 
+            }
+            set { _StartStreamCommand = value; }
+        }
+        public void StartStream()
+        {
+            IsStreamRuning = true;
+            ListenerThreads = new List<Thread>();
+            
+            foreach(var device in DeviceListVM.Devices)
+            {
+                if (device.IsSelected)
+                {
+                    Thread deviceThread = null;
+                    if(device.Type == "Keyboard")
+                    {
+                        Services.KeyboardHandler keyboardHandler = new Services.KeyboardHandler();
+                        deviceThread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(keyboardHandler.OnDeviceEvent, OnDeviceEvent);
+                    }
+                    else if (device.Type == "Mouse")
+                    {
+                        Services.JoystickHandler mouseHandler = new Services.JoystickHandler();
+                        deviceThread = Services.RawInput.RawInputWrapper.MouseListenerThread(mouseHandler.OnDeviceEvent, OnDeviceEvent);
+                    }
+                    else if (device.Type == "Joystick")
+                    {
+                        Services.JoystickHandler joystickHandler = new Services.JoystickHandler();
+                        deviceThread = Services.RawInput.RawInputWrapper.JoystickListenerThread(joystickHandler.OnDeviceEvent, OnDeviceEvent);
+                    }
+                    else
+                    {
+                        throw new Exception("Something went wrong");
+                    }
+                    ListenerThreads.Add(deviceThread);
+                }
+            }
+        }       
+        
+        
+        private DelegateCommand _StopStreamCommand;
+        public DelegateCommand StopStreamCommand
+        {
+            get 
+            {
+                _StopStreamCommand ??= new DelegateCommand(new Action(StopStream), () => { return IsStreamRuning; });
+                return _StopStreamCommand; 
+            }
+            set { _StopStreamCommand = value; }
+        }
+        public void StopStream()
+        {
+            IsStreamRuning = false;
+            foreach(var thread in ListenerThreads)
+            {
+                thread.Abort();
             }
         }
 
         #endregion
+
 
     }
 }

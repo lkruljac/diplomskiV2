@@ -17,9 +17,9 @@ namespace Services
         {
             ObservableCollection<DeviceModel> devices = new ObservableCollection<DeviceModel>
             {
-                new DeviceModel("All keyboards", null, null),
-                new DeviceModel("All mouses", null, null),
-                new DeviceModel("All joystick", null, null)
+                new DeviceModel(null, null, "Keyboard"),
+                new DeviceModel(null, null, "Mouse"),
+                new DeviceModel(null, null, "Joystick")
             };
 
             return devices;

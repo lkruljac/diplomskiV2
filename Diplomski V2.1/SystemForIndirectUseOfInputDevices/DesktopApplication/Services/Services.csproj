@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -177,8 +179,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceHandlers\DeviceHandler.cs" />
+    <Compile Include="DeviceHandlers\JoystickHandler.cs" />
+    <Compile Include="DeviceHandlers\MouseHandler.cs" />
     <Compile Include="Devices.cs" />
-    <Compile Include="KeyboardHandler.cs" />
+    <Compile Include="DeviceHandlers\KeyboardHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawInput\RawInputEventArgs.cs" />
     <Compile Include="RawInput\RawInputReceiverWindow.cs" />

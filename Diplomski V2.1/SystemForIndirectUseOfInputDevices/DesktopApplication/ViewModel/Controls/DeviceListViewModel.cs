@@ -25,7 +25,12 @@ namespace ViewModel.Controls
         public int SelectedIndex
         {
             get { return _SelectedIndex; }
-            set { _SelectedIndex = value; RaisePropertyChangedEvent("SelectedIndex"); OnSelectdIndexChanged(); }
+            set
+            {
+                _SelectedIndex = value;
+                RaisePropertyChangedEvent("SelectedIndex");
+                OnSelectdIndexChanged();
+            }
         }
 
         private string _LabelContent;
@@ -43,7 +48,6 @@ namespace ViewModel.Controls
             set { _StreamText = value; RaisePropertyChangedEvent("StreamText"); }
         }
         
-        static Thread listenerTheread;
         #endregion
 
         #region Constructor(s)
@@ -51,6 +55,7 @@ namespace ViewModel.Controls
         {
             LabelContent = "Devices connected to PC";
             Devices = new ObservableCollection<DeviceModel>();
+            SelectedIndex = -1;
         }
         #endregion
 
@@ -60,19 +65,20 @@ namespace ViewModel.Controls
         public void ListAllConnectedDevices()
         {
             Devices = Services.Devices.GetAllDevices();
-            _SelectedIndex = 0;
         }
 
         private void OnSelectdIndexChanged()
         {
-            listenerTheread?.Abort();
-            switch (_SelectedIndex)
-            {
-                case 0:
-                    listenerTheread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(Services.KeyboardHandler.OnKeyboardEvent);
-                    break;
-            }
+            
         }
         #endregion
+
+
+
+        #region Commands
+
+
+        #endregion
+
     }
 }

@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View.Controls"
+             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="640">
     
-    <Grid Margin="0, 10, 0, 10">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
@@ -21,25 +22,53 @@
             Grid.Row="1"
             ItemsSource="{Binding Devices}"
             SelectedIndex="{Binding SelectedIndex}"
+            
+            IsSynchronizedWithCurrentItem="True"
             VerticalAlignment="Stretch"
             >
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Focusable" Value="false"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+
+
             <ListView.View>
                 <GridView>
+                    <GridViewColumn
+                        
+                        Header="Forward"
+                        Width="50">
+                        <GridViewColumn.CellTemplate>
+                            
+                            <DataTemplate>
+                                
+                                    <CheckBox  
+                                        IsChecked="{Binding Path=IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                                        Margin="11,0,0,0"/>
+                                                              
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn 
                         Header="Device name"
                         DisplayMemberBinding="{Binding Name}"
-                        Width="250"
+                        Width="250"           
                         />
                     <GridViewColumn 
                         Header="ID"
                         DisplayMemberBinding="{Binding Id}"
-                        Width="70"
+                        Width="150"
                         />
                     <GridViewColumn 
                         Header="Device type"
                         DisplayMemberBinding="{Binding Type}"
-                        Width="200"
+                        Width="140"
                         />
+                  
+
                 </GridView>
             </ListView.View>
         </ListView>
