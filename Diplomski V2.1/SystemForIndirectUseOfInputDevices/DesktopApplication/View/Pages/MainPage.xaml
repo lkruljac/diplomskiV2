@@ -8,7 +8,7 @@
              xmlns:ViewModels="clr-namespace:ViewModel.Pages;assembly=SystemForIndirectUseOfInputDevices.DesktopApplication.ViewModel"
              xmlns:Controls="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View.Controls" 
              mc:Ignorable="d" 
-             d:DesignHeight="480" d:DesignWidth="640"
+             d:DesignHeight="580" d:DesignWidth="640" MaxHeight="580" MaxWidth="640"
              d:DataContext="{d:DesignInstance Type={x:Type ViewModels:MainPageViewModel}}"
              >
 
@@ -16,7 +16,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="Auto"/>    
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
@@ -67,5 +68,93 @@
             Text="{Binding StreamOutputText}"
             />
         </Grid>
+        
+        <Label Grid.Row="3" 
+               Grid.Column="0"
+               Margin="0,5,0,5"
+               Content="Connect to target device:"/>
+        
+        <Grid Grid.Row="4" Margin="0,5,0,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+           
+            
+            <Grid   Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="5,0,5,0"
+                    >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <RadioButton Grid.Row="0"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Margin="0,7,0,7"
+                             GroupName="ConnectionType"
+                             Content="TCP/IP">
+                </RadioButton>
+                <RadioButton Grid.Row="1"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Margin="0,7,0,7"
+                             GroupName="ConnectionType"
+                             Content="Bluetooth">
+                </RadioButton>
+                <RadioButton Grid.Row="2"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Margin="0,7,0,7"
+                             GroupName="ConnectionType"
+                             Content="UART">
+                </RadioButton>
+
+
+
+                <Label Grid.Row="3" 
+                   Grid.Column="0"
+                   Content="Status:"/>
+                <Label Grid.Row="3" 
+                   Grid.Column="1"
+                   Content="{Binding SelectedConnectionControl.ConnectionStatus}"/>
+
+            </Grid>
+
+            <Rectangle
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Width="2"
+                    Height="Auto"
+                    Margin="0,-5,0,-5"
+                    Fill="LightGray"
+                    Canvas.Left="10"
+                    Canvas.Top="25" />
+            
+            
+            <Grid   Grid.Row="0"
+                    Grid.Column="4"
+                    Margin="5,0,5,0"                   
+                    >
+                    
+                    <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding SelectedConnectionControl}" />
+            </Grid>
+
+        </Grid>
+        
+        
      </Grid>
 </UserControl>

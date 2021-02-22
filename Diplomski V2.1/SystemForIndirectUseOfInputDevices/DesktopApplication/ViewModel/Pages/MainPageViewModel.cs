@@ -53,6 +53,15 @@ namespace ViewModel.Pages
             }
         }
 
+        private BaseViewModel _SelectedConnectionControl;
+
+        public BaseViewModel SelectedConnectionControl
+        {
+            get { return _SelectedConnectionControl; }
+            set { _SelectedConnectionControl = value; RaisePropertyChangedEvent("SelectedConnectionControl"); }
+        }
+
+
         private List<Thread> ListenerThreads;
 
         #endregion
@@ -64,6 +73,7 @@ namespace ViewModel.Pages
         {
             DeviceListVM = new DeviceListViewModel();
             _IsStreamRuning = false;
+            SelectedConnectionControl = new Connections.NetworkViewModel();
         }
         #endregion
 
@@ -111,17 +121,20 @@ namespace ViewModel.Pages
                     if(device.Type == "Keyboard")
                     {
                         Services.KeyboardHandler keyboardHandler = new Services.KeyboardHandler();
-                        deviceThread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(keyboardHandler.OnDeviceEvent, OnDeviceEvent);
+                        keyboardHandler.GUIOnDeviceEvent += OnDeviceEvent;
+                        deviceThread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(keyboardHandler.OnDeviceEvent);
                     }
                     else if (device.Type == "Mouse")
                     {
                         Services.JoystickHandler mouseHandler = new Services.JoystickHandler();
-                        deviceThread = Services.RawInput.RawInputWrapper.MouseListenerThread(mouseHandler.OnDeviceEvent, OnDeviceEvent);
+                        mouseHandler.GUIOnDeviceEvent += OnDeviceEvent;
+                        deviceThread = Services.RawInput.RawInputWrapper.MouseListenerThread(mouseHandler.OnDeviceEvent);
                     }
                     else if (device.Type == "Joystick")
                     {
                         Services.JoystickHandler joystickHandler = new Services.JoystickHandler();
-                        deviceThread = Services.RawInput.RawInputWrapper.JoystickListenerThread(joystickHandler.OnDeviceEvent, OnDeviceEvent);
+                        joystickHandler.GUIOnDeviceEvent += OnDeviceEvent;
+                        deviceThread = Services.RawInput.RawInputWrapper.JoystickListenerThread(joystickHandler.OnDeviceEvent);
                     }
                     else
                     {

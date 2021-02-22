@@ -9,9 +9,16 @@ namespace Services
 {
     public abstract class DeviceHandler
     {
+
+        public Services.Connectors.Connector Connector;
+
+        public delegate void ProcessRawInputData(RawInputData message);
+        public ProcessRawInputData GUIOnDeviceEvent;
+
         public virtual void OnDeviceEvent(RawInputData data)
         {
-            //Console.WriteLine(data);
+            GUIOnDeviceEvent?.Invoke(data);
+            Connector?.SendMessage(data.ToString());
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Services.RawInput
     public static class RawInputWrapper
     {
         public delegate void OnDeviceEvent(RawInputData message);
-        public static Thread KeyboardListenerThread(OnDeviceEvent onDeviceEventServiceCallback, OnDeviceEvent onDeviceEventGuiCallback = null)
+        public static Thread KeyboardListenerThread(OnDeviceEvent onDeviceEventCallback)
         {
             Thread keyboardListenerThread = new Thread(() =>
             {
@@ -24,8 +24,7 @@ namespace Services.RawInput
                         return;
                     }
                     previousMessage = e.Data;
-                    onDeviceEventServiceCallback(e.Data);
-                    onDeviceEventGuiCallback?.Invoke(e.Data);
+                    onDeviceEventCallback(e.Data);
                 };
 
                 try
@@ -44,15 +43,15 @@ namespace Services.RawInput
             return keyboardListenerThread;
         }
 
-        public static Thread MouseListenerThread(OnDeviceEvent onDeviceEventServiceCallback, OnDeviceEvent onDeviceEventGuiCallback = null)
+        public static Thread MouseListenerThread(OnDeviceEvent onDeviceEventCallback)
         {
             Thread mouseListenerThread = new Thread(() =>
             {
                 var mouse = new RawInputReceiverWindow();
                 mouse.Input += (sender, e) =>
                 {
-                    onDeviceEventServiceCallback(e.Data);
-                    onDeviceEventGuiCallback?.Invoke(e.Data);
+                    onDeviceEventCallback(e.Data);
+
                 };
 
                 try
@@ -72,15 +71,14 @@ namespace Services.RawInput
         }
 
 
-        public static Thread JoystickListenerThread(OnDeviceEvent onDeviceEventServiceCallback, OnDeviceEvent onDeviceEventGuiCallback = null)
+        public static Thread JoystickListenerThread(OnDeviceEvent onDeviceEventCallback)
         {
             Thread joystickListenerThread = new Thread(() =>
             {
                 var joystick = new RawInputReceiverWindow();
                 joystick.Input += (sender, e) =>
                 {
-                    onDeviceEventServiceCallback(e.Data);
-                    onDeviceEventGuiCallback?.Invoke(e.Data);
+                    onDeviceEventCallback(e.Data);
                 };
 
                 try

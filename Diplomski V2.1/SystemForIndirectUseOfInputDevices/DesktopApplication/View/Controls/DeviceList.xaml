@@ -39,7 +39,7 @@
                 <GridView>
                     <GridViewColumn
                         
-                        Header="Forward"
+                        Header="Listen"
                         Width="50">
                         <GridViewColumn.CellTemplate>
                             

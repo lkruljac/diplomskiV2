@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View"
         Icon="/Resource/remoter.ico"
         mc:Ignorable="d"
-        Title="Remoter" Height="480" Width="640">
+        ResizeMode="CanMinimize"
+        Title="Remoter" SizeToContent="WidthAndHeight">
     <Grid>
         <ContentControl Content="{Binding SelectedViewModel}" />
     </Grid>

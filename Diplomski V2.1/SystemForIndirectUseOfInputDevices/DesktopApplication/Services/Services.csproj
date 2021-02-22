@@ -179,6 +179,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connectors\Connection.cs" />
+    <Compile Include="Connectors\NetworkConnector.cs" />
     <Compile Include="DeviceHandlers\DeviceHandler.cs" />
     <Compile Include="DeviceHandlers\JoystickHandler.cs" />
     <Compile Include="DeviceHandlers\MouseHandler.cs" />

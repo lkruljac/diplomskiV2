@@ -53,6 +53,7 @@
     <Compile Include="Controls\DeviceListViewModel.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Pages\BasePageViewModel.cs" />
+    <Compile Include="Pages\Connections\NetworkViewModel.cs" />
     <Compile Include="Pages\MainPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
