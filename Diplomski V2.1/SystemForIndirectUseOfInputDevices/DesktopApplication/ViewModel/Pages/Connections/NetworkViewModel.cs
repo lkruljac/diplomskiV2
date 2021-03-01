@@ -4,47 +4,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Services;
+using Model.Connectors;
 
 namespace ViewModel.Pages.Connections
 {
-    public class NetworkViewModel : BaseViewModel
+    public class NetworkViewModel : BaseConnectionControl
     {
-        private int _Port;
-        public int Port
+        #region Constructor(s)
+
+        public NetworkViewModel()
         {
-            get { return _Port; }
-            set { _Port = value; RaisePropertyChangedEvent("Port"); }
+            Connector = new NetworkConnector();
         }
 
-        private string _IP;
-        public string IP
-        {
-            get { return _IP; }
-            set { _IP = value; RaisePropertyChangedEvent("IP"); }
-        }
+        #endregion
 
-        private bool _IsConnected;
 
-        public bool IsConnected
-        {
-            get { return _IsConnected; }
-            set { _IsConnected = value; RaisePropertyChangedEvent("IsConnected"); RaisePropertyChangedEvent("ConnectionStatus"); ConnectCommand.RaiseCanExecuteChanged(); DisconnectCommand.RaiseCanExecuteChanged(); }
-        }
+        #region Properites
+    
 
-        private string _ConnectionStatus;
-
-        public string ConnectionStatus
-        {
-            get { if (IsConnected) { _ConnectionStatus = "Connected"; } else { _ConnectionStatus = "Disconnected"; } return _ConnectionStatus; }
-            set { _ConnectionStatus = value; RaisePropertyChangedEvent("ConnectionStatus"); }
-        }
+        #endregion
 
 
         private DelegateCommand _ConnectCommand;
 
         public DelegateCommand ConnectCommand
         {
-            get { _ConnectCommand ??= new DelegateCommand(new Action(Connect), () => { return !IsConnected; }); return _ConnectCommand; }
+            get { _ConnectCommand ??= new DelegateCommand(new Action(Connect), () => { return !Connector.IsConnected; }); return _ConnectCommand; }
             set { _ConnectCommand = value; RaisePropertyChangedEvent("ConnectCommand"); }
         }
 
@@ -53,7 +40,7 @@ namespace ViewModel.Pages.Connections
 
         public DelegateCommand DisconnectCommand
         {
-            get { _DisconnectCommand ??= new DelegateCommand(new Action(Disconnect), () => { return IsConnected; }); return _DisconnectCommand; }
+            get { _DisconnectCommand ??= new DelegateCommand(new Action(Disconnect), () => { return Connector.IsConnected; }); return _DisconnectCommand; }
             set { _DisconnectCommand = value; RaisePropertyChangedEvent("DisconnectCommand"); }
         }
 
@@ -62,13 +49,17 @@ namespace ViewModel.Pages.Connections
 
         public void Connect()
         {
-            IsConnected = true;
-
+            Connector.Connect();
+            ConnectCommand.RaiseCanExecuteChanged(); 
+            DisconnectCommand.RaiseCanExecuteChanged();
         }
 
         public void Disconnect()
         {
-            IsConnected = false;
+            //Connector.Stream = null;
+            Connector.Status = "Disconnected";
+            ConnectCommand.RaiseCanExecuteChanged();
+            DisconnectCommand.RaiseCanExecuteChanged();
         }
         #endregion
 

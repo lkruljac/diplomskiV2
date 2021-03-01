@@ -1,4 +1,5 @@
 ﻿using Linearstar.Windows.RawInput;
+using Model.Connectors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Services
     public abstract class DeviceHandler
     {
 
-        public Services.Connectors.Connector Connector;
+        public Connector Connector;
 
         public delegate void ProcessRawInputData(RawInputData message);
         public ProcessRawInputData GUIOnDeviceEvent;

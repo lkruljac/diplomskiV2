@@ -11,6 +11,7 @@ using ViewModel.Controls;
 using System.ComponentModel;
 using System.Threading;
 using Linearstar.Windows.RawInput;
+using ViewModel.Pages.Connections;
 
 namespace ViewModel.Pages
 {
@@ -53,9 +54,58 @@ namespace ViewModel.Pages
             }
         }
 
-        private BaseViewModel _SelectedConnectionControl;
 
-        public BaseViewModel SelectedConnectionControl
+        private bool _IsUARTChecked;
+        public bool IsUARTChecked
+        {
+            get { return _IsUARTChecked; }
+            set 
+            { 
+                _IsUARTChecked = value; 
+                RaisePropertyChangedEvent("IsUARTChecked");
+                if (_IsUARTChecked)
+                {
+                    SelectedConnectionControl = null;
+                }
+            }
+        }
+
+
+        private bool _IsBluetoothChecked;
+        public bool IsBluetoothChecked
+        {
+            get { return _IsBluetoothChecked; }
+            set 
+            { 
+                _IsBluetoothChecked = value; 
+                RaisePropertyChangedEvent("IsBluetoothChecked");
+                if (_IsBluetoothChecked)
+                {
+                    SelectedConnectionControl = null;
+                }
+            }
+        }
+
+        private bool _IsTCPIPChecked;
+        public bool IsTCPIPChecked
+        {
+            get { return _IsTCPIPChecked; }
+            set 
+            { 
+                _IsTCPIPChecked = value; 
+                RaisePropertyChangedEvent("IsTCPIPChecked");
+                if (_IsTCPIPChecked)
+                {
+                    SelectedConnectionControl = new NetworkViewModel();
+                }
+            }
+        }
+
+
+
+        private BaseConnectionControl  _SelectedConnectionControl;
+
+        public BaseConnectionControl SelectedConnectionControl
         {
             get { return _SelectedConnectionControl; }
             set { _SelectedConnectionControl = value; RaisePropertyChangedEvent("SelectedConnectionControl"); }
@@ -73,7 +123,7 @@ namespace ViewModel.Pages
         {
             DeviceListVM = new DeviceListViewModel();
             _IsStreamRuning = false;
-            SelectedConnectionControl = new Connections.NetworkViewModel();
+            IsTCPIPChecked = true;
         }
         #endregion
 
@@ -121,6 +171,7 @@ namespace ViewModel.Pages
                     if(device.Type == "Keyboard")
                     {
                         Services.KeyboardHandler keyboardHandler = new Services.KeyboardHandler();
+                        keyboardHandler.Connector = SelectedConnectionControl.Connector;
                         keyboardHandler.GUIOnDeviceEvent += OnDeviceEvent;
                         deviceThread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(keyboardHandler.OnDeviceEvent);
                     }

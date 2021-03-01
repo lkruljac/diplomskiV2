@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Connectors
+namespace Model.Connectors
 {
     public class NetworkConnector : Connector
     {
@@ -18,27 +18,29 @@ namespace Services.Connectors
             set { Stream = value; }
         }
 
-        private string _ServerIP;
-        public string ServerIP
+        private int _Port;
+        public int Port
         {
-            get { return _ServerIP; }
-            set { _ServerIP = value; }
+            get { return _Port; }
+            set { _Port = value; RaisePropertyChangedEvent("Port"); }
         }
 
-        private int _ServerPort;
-        public int ServerPort
+        private string _IP;
+        public string IP
         {
-            get { return _ServerPort; }
-            set { _ServerPort = value; }
+            get { return _IP; }
+            set { _IP = value; RaisePropertyChangedEvent("IP"); }
         }
 
-
+    
         #endregion
 
 
         #region Constructor(s)
         public NetworkConnector()
         {
+            Port = 54000;
+            IP = "192.168.0.100";
             Status = "Disconnected";
         }
         #endregion
@@ -62,7 +64,7 @@ namespace Services.Connectors
                 // Note, for this client to work you need to have a TcpServer
                 // connected to the same address as specified by the server, port
                 // combination.
-                TcpClient client = new TcpClient(ServerIP, ServerPort);
+                TcpClient client = new TcpClient(IP, Port);
 
                 // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes("Test message");

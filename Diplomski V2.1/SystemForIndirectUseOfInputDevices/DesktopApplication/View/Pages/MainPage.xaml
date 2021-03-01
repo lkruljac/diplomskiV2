@@ -104,6 +104,7 @@
                              Grid.Column="0"
                              Grid.ColumnSpan="2"
                              Margin="0,7,0,7"
+                             IsChecked="{Binding IsTCPIPChecked}"
                              GroupName="ConnectionType"
                              Content="TCP/IP">
                 </RadioButton>
@@ -111,6 +112,7 @@
                              Grid.Column="0"
                              Grid.ColumnSpan="2"
                              Margin="0,7,0,7"
+                             IsChecked="{Binding IsBluetoothChecked}"
                              GroupName="ConnectionType"
                              Content="Bluetooth">
                 </RadioButton>
@@ -119,6 +121,7 @@
                              Grid.ColumnSpan="2"
                              Margin="0,7,0,7"
                              GroupName="ConnectionType"
+                             IsChecked="{Binding IsUARTChecked}"
                              Content="UART">
                 </RadioButton>
 
@@ -129,7 +132,7 @@
                    Content="Status:"/>
                 <Label Grid.Row="3" 
                    Grid.Column="1"
-                   Content="{Binding SelectedConnectionControl.ConnectionStatus}"/>
+                   Content="{Binding SelectedConnectionControl.Connector.Status}"/>
 
             </Grid>
 

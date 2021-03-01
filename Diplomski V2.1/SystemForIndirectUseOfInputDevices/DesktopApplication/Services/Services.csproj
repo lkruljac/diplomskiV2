@@ -179,8 +179,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connectors\Connection.cs" />
-    <Compile Include="Connectors\NetworkConnector.cs" />
+    <Compile Include="Connectors\NetworkConnectorService.cs" />
     <Compile Include="DeviceHandlers\DeviceHandler.cs" />
     <Compile Include="DeviceHandlers\JoystickHandler.cs" />
     <Compile Include="DeviceHandlers\MouseHandler.cs" />
@@ -192,6 +191,10 @@
     <Compile Include="RawInput\RawInputWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.csproj">
+      <Project>{2e4e3210-d603-4b1f-b425-b83d5c1b6cc5}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{49d8ec6e-b70f-403f-81fe-f8204efa130f}</Project>
       <Name>Model</Name>
@@ -200,5 +203,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
