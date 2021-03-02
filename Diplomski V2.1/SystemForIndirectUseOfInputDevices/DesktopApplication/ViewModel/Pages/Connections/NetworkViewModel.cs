@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Services;
 using Model.Connectors;
+using System.Windows;
+using System.Threading;
 
 namespace ViewModel.Pages.Connections
 {
@@ -16,13 +18,27 @@ namespace ViewModel.Pages.Connections
         public NetworkViewModel()
         {
             Connector = new NetworkConnector();
+            IsLoadingAnimationVisible = false;
         }
 
         #endregion
 
 
         #region Properites
-    
+        private bool _IsLoadingAnimationVisible;
+        public bool IsLoadingAnimationVisible
+        {
+            get {  return _IsLoadingAnimationVisible; }
+            set { _IsLoadingAnimationVisible = value; if (_IsLoadingAnimationVisible) { LoadingAnimationVisibility = Visibility.Visible; } else { LoadingAnimationVisibility = Visibility.Hidden; } RaisePropertyChangedEvent("LoadingAnimationVisibility"); }
+        }
+        private Visibility _LoadingAnimationVisibility;
+
+        public Visibility LoadingAnimationVisibility
+        {
+            get { return _LoadingAnimationVisibility; }
+            set { _LoadingAnimationVisibility = value; RaisePropertyChangedEvent("LoadingAnimationVisibility"); }
+        }
+
 
         #endregion
 
@@ -49,9 +65,34 @@ namespace ViewModel.Pages.Connections
 
         public void Connect()
         {
-            Connector.Connect();
-            ConnectCommand.RaiseCanExecuteChanged(); 
-            DisconnectCommand.RaiseCanExecuteChanged();
+            ConnectCommand._checkCanExecute = () => { return false; };
+            ConnectCommand.RaiseCanExecuteChanged();
+            ConnectCommand._checkCanExecute = () => { return !Connector.IsConnected; };
+            IsLoadingAnimationVisible = true;
+
+
+            Thread connectThread = new Thread(() =>
+            {
+                try
+                {
+                    Connector.Connect();
+                }
+                catch
+                {
+                    Connector.Status = "Fail";
+                }
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                     IsLoadingAnimationVisible = false;
+                });
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ConnectCommand.RaiseCanExecuteChanged();
+                    DisconnectCommand.RaiseCanExecuteChanged();
+                });
+ 
+            });
+            connectThread.Start(); 
         }
 
         public void Disconnect()

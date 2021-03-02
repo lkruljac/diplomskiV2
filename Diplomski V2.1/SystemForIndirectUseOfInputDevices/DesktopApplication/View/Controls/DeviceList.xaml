@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View.Controls"
-             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Commanding="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="640">
-    
+             >
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
@@ -22,12 +23,13 @@
             Grid.Row="1"
             ItemsSource="{Binding Devices}"
             SelectedIndex="{Binding SelectedIndex}"
-            
             IsSynchronizedWithCurrentItem="True"
             VerticalAlignment="Stretch"
+            
             >
 
             <ListView.ItemContainerStyle>
+
                 <Style TargetType="ListViewItem">
                     <Setter Property="Focusable" Value="false"/>
                 </Style>
@@ -37,37 +39,39 @@
 
             <ListView.View>
                 <GridView>
-                    <GridViewColumn
-                        
-                        Header="Listen"
-                        Width="50">
+                    <GridViewColumn>
+                        <GridViewColumnHeader Content="Listen" Command="{Binding HeaderClickedCommand}" CommandParameter="Listen"/>
                         <GridViewColumn.CellTemplate>
-                            
+
                             <DataTemplate>
-                                
-                                    <CheckBox  
+
+                                <CheckBox  
                                         IsChecked="{Binding Path=IsSelected, UpdateSourceTrigger=PropertyChanged}"
-                                        Margin="11,0,0,0"/>
-                                                              
+                                        Margin="6,0,0,0"/>
+
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn 
-                        Header="Device name"
                         DisplayMemberBinding="{Binding Name}"
-                        Width="250"           
-                        />
+                        Width="300"
+                        >
+                        <GridViewColumnHeader Content="Device name" Command="{Binding HeaderClickedCommand}" CommandParameter="Name"/>
+                    </GridViewColumn>
                     <GridViewColumn 
-                        Header="ID"
+                                         
                         DisplayMemberBinding="{Binding Id}"
-                        Width="150"
-                        />
+                
+                        >
+                        <GridViewColumnHeader Content="ID" Command="{Binding HeaderClickedCommand}" CommandParameter="ID"/>
+                    </GridViewColumn>
                     <GridViewColumn 
-                        Header="Device type"
                         DisplayMemberBinding="{Binding Type}"
-                        Width="140"
-                        />
-                  
+   
+                        >
+                        <GridViewColumnHeader Content="Device type" Command="{Binding HeaderClickedCommand}" CommandParameter="Type"/>
+                    </GridViewColumn>
+
 
                 </GridView>
             </ListView.View>

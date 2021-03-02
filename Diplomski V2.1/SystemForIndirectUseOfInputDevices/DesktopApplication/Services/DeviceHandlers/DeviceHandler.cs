@@ -19,7 +19,15 @@ namespace Services
         public virtual void OnDeviceEvent(RawInputData data)
         {
             GUIOnDeviceEvent?.Invoke(data);
-            Connector?.SendMessage(data.ToString());
+            if (Connector == null)
+            {
+                return;
+            }
+            if (Connector.IsConnected)
+            {
+                Connector?.SendMessage(data.ToString());
+            }
+
         }
     }
 }

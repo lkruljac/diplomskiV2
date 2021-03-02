@@ -8,25 +8,58 @@
              xmlns:ViewModels="clr-namespace:ViewModel.Pages;assembly=SystemForIndirectUseOfInputDevices.DesktopApplication.ViewModel"
              xmlns:Controls="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View.Controls" 
              mc:Ignorable="d" 
-             d:DesignHeight="580" d:DesignWidth="640" MaxHeight="580" MaxWidth="640"
+             MaxHeight="580" Width="640"
              d:DataContext="{d:DesignInstance Type={x:Type ViewModels:MainPageViewModel}}"
              >
 
     <Grid Margin="10,10,10,10">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="250"/>
-            <RowDefinition Height="Auto"/>    
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+       
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Controls:DeviceList
+                Margin="0,0,0,10"
+                MaxHeight="160"
+                DataContext="{Binding DeviceListVM}"
+                Grid.Row="0"
+                Grid.Column="0"
+            />
+
+            <Grid Grid.Row="0" Grid.Column="1" Margin="0,50,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button 
+                    Grid.Row="0"
+                        Margin="5,5,0,5"
+                    Content="On screen keyboard"
+                    />
+                <Button 
+                    Grid.Row="1"
+                    Margin="5,5,0,5"
+                    Content="On screen gamepad"
+                    Command="{Binding OnScreenKeyboardCommand}"
+                    />
+
+            </Grid>
+
+        </Grid>
+    
         
-        <Controls:DeviceList
-            Margin="0,0,0,10"
-            DataContext="{Binding DeviceListVM}"
-            Grid.Row="0"
-        />
-        <Grid Grid.Row="1" Margin="0,0,0,0">
+        <Grid Grid.Row="1" Margin="0,0,0,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>
@@ -61,12 +94,13 @@
                 Content="Devices stream:"
             />
             <TextBox
-            Grid.Row="1"
-            IsReadOnly="True"
-            src:TextBoxBehaviour.ScrollOnTextChanged="True"
-            VerticalScrollBarVisibility="Auto"
-            Text="{Binding StreamOutputText}"
+                Grid.Row="1"
+                IsReadOnly="True"
+                src:TextBoxBehaviour.ScrollOnTextChanged="True"
+                VerticalScrollBarVisibility="Auto"
+                Text="{Binding StreamOutputText}"
             />
+            
         </Grid>
         
         <Label Grid.Row="3" 

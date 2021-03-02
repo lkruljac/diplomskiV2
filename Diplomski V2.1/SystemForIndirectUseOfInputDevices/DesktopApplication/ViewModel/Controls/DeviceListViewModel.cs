@@ -77,7 +77,42 @@ namespace ViewModel.Controls
 
         #region Commands
 
+        private DelegateCommand<string> _HeaderClickedCommand;
 
+        public DelegateCommand<string> HeaderClickedCommand
+        {
+            get { _HeaderClickedCommand ??= new DelegateCommand<string>(OnHeaderClick); return _HeaderClickedCommand;  }
+            set { _HeaderClickedCommand = value; }
+        }
+
+        bool alreadySorted = false;
+        public void OnHeaderClick(string parm)
+        {
+            if(parm == "ID")
+            {
+                Devices = new ObservableCollection<DeviceModel>(Devices.OrderBy(i => i.Id));
+            }          
+            else if(parm == "Name")
+            {
+                Devices = new ObservableCollection<DeviceModel>(Devices.OrderBy(i => i.Name));
+            }       
+            else if(parm == "Type")
+            {
+                Devices = new ObservableCollection<DeviceModel>(Devices.OrderBy(i => i.Type));
+            }      
+            else if(parm == "Listen")
+            {
+                Devices = new ObservableCollection<DeviceModel>(Devices.OrderBy(i => i.IsSelected));
+            }
+            if (alreadySorted)
+            {
+                Devices = new ObservableCollection<DeviceModel>(Devices.Reverse());
+
+            }
+            alreadySorted = !alreadySorted;
+        }
+
+ 
         #endregion
 
     }

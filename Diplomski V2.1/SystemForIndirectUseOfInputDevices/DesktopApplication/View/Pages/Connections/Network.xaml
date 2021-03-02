@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls ="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View.Controls"
              xmlns:local="clr-namespace:SystemForIndirectUseOfInputDevices.DesktopApplication.View.Pages.Connections"
              mc:Ignorable="d">
 
@@ -11,28 +12,31 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="105"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Label 
-            Content="IP:" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top"
-            Grid.Row="0"
+            Content="IP Address:" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Center"
+            Grid.Row="1"
             Grid.Column="0"
             />
         <Label 
             Content="Port:" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top"
-            Grid.Row="1"
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Center"
+            Grid.Row="2"
             Grid.Column="0"
             />
         <TextBox  
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="1"
             HorizontalAlignment="Stretch" 
             Text="{Binding Path=Connector.IP, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
@@ -40,7 +44,7 @@
             Margin="5,0,5,0"
             />        
         <TextBox  
-            Grid.Row="1"
+            Grid.Row="2"
             Grid.Column="1"
             HorizontalAlignment="Stretch" 
             Text="{Binding Path=Connector.Port, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
@@ -48,24 +52,33 @@
             Margin="5,0,5,0"
             />
         <Button 
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="2"
             Margin="5,5,5,5"
             Command="{Binding ConnectCommand}" 
             Content="Connect" 
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
+            VerticalAlignment="Center"
             />        
         <Button 
-            Grid.Row="1"
+            Grid.Row="2"
             Grid.Column="2"
             Margin="5,5,5,5"
             Command="{Binding DisconnectCommand}" 
             Content="Disconnect" 
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
+            VerticalAlignment="Center"
             />
-     
+        <Controls:LoadingAnimation 
+            Visibility="{Binding LoadingAnimationVisibility}"
+            Grid.Row="0"
+            Grid.RowSpan="4"
+            Grid.Column="3"
+            Margin="20,0,10,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            />
+
 
     </Grid>
 </UserControl>

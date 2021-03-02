@@ -54,7 +54,7 @@ namespace ViewModel.Pages
             }
         }
 
-
+        #region Radiobuttons
         private bool _IsUARTChecked;
         public bool IsUARTChecked
         {
@@ -101,6 +101,7 @@ namespace ViewModel.Pages
             }
         }
 
+        #endregion
 
 
         private BaseConnectionControl  _SelectedConnectionControl;
@@ -133,7 +134,6 @@ namespace ViewModel.Pages
         public override void EnterPage()
         {
             DeviceListVM.ListAllConnectedDevices();
-       
         }
 
         public void OnDeviceEvent(RawInputData message)
@@ -173,19 +173,19 @@ namespace ViewModel.Pages
                         Services.KeyboardHandler keyboardHandler = new Services.KeyboardHandler();
                         keyboardHandler.Connector = SelectedConnectionControl.Connector;
                         keyboardHandler.GUIOnDeviceEvent += OnDeviceEvent;
-                        deviceThread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(keyboardHandler.OnDeviceEvent);
+                        deviceThread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(keyboardHandler.OnDeviceEvent, device.Id);
                     }
                     else if (device.Type == "Mouse")
                     {
                         Services.JoystickHandler mouseHandler = new Services.JoystickHandler();
                         mouseHandler.GUIOnDeviceEvent += OnDeviceEvent;
-                        deviceThread = Services.RawInput.RawInputWrapper.MouseListenerThread(mouseHandler.OnDeviceEvent);
+                        deviceThread = Services.RawInput.RawInputWrapper.MouseListenerThread(mouseHandler.OnDeviceEvent, device.Id);
                     }
                     else if (device.Type == "Joystick")
                     {
                         Services.JoystickHandler joystickHandler = new Services.JoystickHandler();
                         joystickHandler.GUIOnDeviceEvent += OnDeviceEvent;
-                        deviceThread = Services.RawInput.RawInputWrapper.JoystickListenerThread(joystickHandler.OnDeviceEvent);
+                        deviceThread = Services.RawInput.RawInputWrapper.JoystickListenerThread(joystickHandler.OnDeviceEvent, device.Id);
                     }
                     else
                     {
@@ -215,6 +215,15 @@ namespace ViewModel.Pages
                 thread.Abort();
             }
         }
+
+        private DelegateCommand _OnScreenKeyboardCommand;
+
+        public DelegateCommand OnScreenKeyboardCommand
+        {
+            get { return _OnScreenKeyboardCommand; }
+            set { _OnScreenKeyboardCommand = value; RaisePropertyChangedEvent("OnScreenKeyboardCommand"); }
+        }
+
 
         #endregion
 
