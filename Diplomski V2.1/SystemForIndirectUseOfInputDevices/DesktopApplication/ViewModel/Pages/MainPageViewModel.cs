@@ -220,11 +220,14 @@ namespace ViewModel.Pages
 
         public DelegateCommand OnScreenKeyboardCommand
         {
-            get { return _OnScreenKeyboardCommand; }
+            get { _OnScreenKeyboardCommand??=new DelegateCommand(new Action(OnScreenKeyboard)); return _OnScreenKeyboardCommand; }
             set { _OnScreenKeyboardCommand = value; RaisePropertyChangedEvent("OnScreenKeyboardCommand"); }
         }
 
+        public void OnScreenKeyboard()
+        {
 
+        }
         #endregion
 
 
