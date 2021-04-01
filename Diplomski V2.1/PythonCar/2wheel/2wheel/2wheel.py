@@ -1,82 +1,173 @@
+#!/usr/bin/env python
+# coding: Latin-1
+
+# Load library functions we want
+import time
+import pygame
 import RPi.GPIO as GPIO
-from time import sleep
-
+import turtle  # to draw the drawing along with Robot
+from turtle import *
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
-#left motor
-in2 = 10    
-in1 = 9     
-en1 = 11    
+# Set which GPIO pins the drive outputs are connected to
+DRIVE_1 = 23
+DRIVE_2 = 24
+DRIVE_3 = 9
+DRIVE_4 = 10
 
-#right motor
-in3 = 24    
-in4 = 23    
-en2 = 25    
+en1 = 25
+en2 = 11
 
-#setup motors 
-GPIO.setup(in2,GPIO.OUT)
-GPIO.setup(in1,GPIO.OUT)
-GPIO.setup(en1,GPIO.OUT)
+# Set all of the drive pins as output pins
+GPIO.setup(DRIVE_1, GPIO.OUT)
+GPIO.setup(DRIVE_2, GPIO.OUT)
+GPIO.setup(DRIVE_3, GPIO.OUT)
+GPIO.setup(en1, GPIO.OUT)
+GPIO.setup(en2, GPIO.OUT)
+GPIO.setup(DRIVE_4, GPIO.OUT)
 
-GPIO.setup(in3,GPIO.OUT)
-GPIO.setup(in4,GPIO.OUT)
-GPIO.setup(en2,GPIO.OUT)
+# Function to set all drives off
+def MotorOff():
+    GPIO.output(DRIVE_1, GPIO.LOW)
+    GPIO.output(DRIVE_2, GPIO.LOW)
+    GPIO.output(DRIVE_3, GPIO.LOW)
+    GPIO.output(DRIVE_4, GPIO.LOW)
+    GPIO.setup(en1, GPIO.LOW)
+    GPIO.setup(en2, GPIO.LOW)
 
-def forwards():
-    GPIO.output(in2,GPIO.HIGH)
-    GPIO.output(in1,GPIO.LOW)
-    GPIO.output(en1,GPIO.HIGH)
+Button = 2
 
-    GPIO.output(in3,GPIO.HIGH)
-    GPIO.output(in4,GPIO.LOW)
-    GPIO.output(en2,GPIO.HIGH)
+#setup turtle screen
+turtle.setup(800,600)
+wn = turtle.Screen() 
+wn.title("Guru's Turtle Robot!") 
+t = turtle.Turtle('turtle')  # choose your own icons have picked turtle
 
-def backwards():
-    GPIO.output(in2,GPIO.LOW)
-    GPIO.output(in1,GPIO.HIGH)
-    GPIO.output(en1,GPIO.HIGH)
 
-    GPIO.output(in3,GPIO.LOW)
-    GPIO.output(in4,GPIO.HIGH)
-    GPIO.output(en2,GPIO.HIGH)
+# Settings for JoyBorg
+leftDrive = DRIVE_1                     # Drive number for left motor
+rightDrive = DRIVE_4                    # Drive number for right motor
+axisUpDown = 1                          # Joystick axis to read for up / down position
+axisUpDownInverted = False              # Set this to True if up and down appear to be swapped
+axisLeftRight = 3                       # Joystick axis to read for left / right position
+axisLeftRightInverted = False           # Set this to True if left and right appear to be swapped
+interval = 0.1                          # Time between keyboard updates in seconds, smaller responds faster but uses more processor time
 
-def left():
-    GPIO.output(in2, GPIO.LOW)
-    GPIO.output(in1, GPIO.LOW)
-    GPIO.output(en1, GPIO.LOW)
+# Setup pygame and key states
+global hadEvent
+global moveUp
+global moveDown
+global moveLeft
+global moveRight
+global moveQuit
+hadEvent = True
+moveUp = False
+moveDown = False
+moveLeft = False
+moveRight = False
+moveQuit = False
+pygame.init()
+pygame.joystick.init()
+joystick = pygame.joystick.Joystick(0)
+joystick.init()
 
-def right():
-    GPIO.output(in3, GPIO.LOW)
-    GPIO.output(in4, GPIO.LOW)
-    GPIO.output(en2, GPIO.LOW)
+# Function to handle pygame events
+def PygameHandler(events):
+    # Variables accessible outside this function
+    global hadEvent
+    global moveUp
+    global moveDown
+    global moveLeft
+    global moveRight
+    global moveQuit
+    
+    # Handle each event individually
+    for event in events:
+        if event.type == pygame.QUIT:
+            # User exit
+            hadEvent = True
+            moveQuit = True
+        elif event.type == pygame.KEYDOWN:
+            # A key has been pressed, see if it is one we want
+            hadEvent = True
+            if event.key == pygame.K_ESCAPE:
+                moveQuit = True
+        elif event.type == pygame.KEYUP:
+            # A key has been released, see if it is one we want
+            hadEvent = True
+            if event.key == pygame.K_ESCAPE:
+                moveQuit = False
+        elif event.type == pygame.JOYAXISMOTION:
+            # A joystick has been moved, read axis positions (-1 to +1)
+            hadEvent = True
+            upDown = joystick.get_axis(axisUpDown)
+            leftRight = joystick.get_axis(axisLeftRight)
+            # Invert any axes which are incorrect
+            if axisUpDownInverted:
+                upDown = -upDown
+            if axisLeftRightInverted:
+                leftRight = -leftRight
+            # Determine Up / Down values
+            if upDown < -0.1:
+                moveUp = True
+                moveDown = False
+                t.forward(2)
+                
+            elif upDown > 0.1:
+                moveUp = False
+                moveDown = True
+                t.backward(2)
+                
+            else:
+                moveUp = False
+                moveDown = False
+            # Determine Left / Right values
+            if leftRight < -0.1:
+                moveLeft = True
+                moveRight = False
+                t.left(2)
+                
+            elif leftRight > 0.1:
+                moveLeft = False
+                moveRight = True
+                t.right(2)
+                
+            else:
+                moveLeft = False
+                moveRight = False
+try:
+    print ('Press [ESC] or Press PS3 O button to quit')
+    # Loop indefinitely
+    while True:
+        GPIO.setup(en1, GPIO.HIGH)
+        GPIO.setup(en2, GPIO.HIGH)
+        # Get the currently pressed keys on the keyboard
+        PygameHandler(pygame.event.get())
+        if hadEvent:
+            # Keys have changed, generate the command list based on keys
+            hadEvent = False
+            if moveQuit:
+                break
+            elif moveLeft:
+                leftState = GPIO.LOW
+                rightState = GPIO.HIGH
+            elif moveRight:
+                leftState = GPIO.HIGH
+                rightState = GPIO.LOW
+            elif moveUp:
+                leftState = GPIO.HIGH
+                rightState = GPIO.HIGH
+            else:
+                leftState = GPIO.LOW
+                rightState = GPIO.LOW
+            GPIO.output(leftDrive, leftState)
+            GPIO.output(rightDrive, rightState)
+        # Wait for the interval period
+        time.sleep(interval)
+    # Disable all drives
+    MotorOff()
+except KeyboardInterrupt:
+    # CTRL+C exit, disable all drives
+    MotorOff()
 
-def stop():
-    GPIO.output(en1,GPIO.LOW)
-    GPIO.output(en2,GPIO.LOW)
-
-#setup pwm
-pwm_right = GPIO.PWM(en2, 100)
-pwm_left = GPIO.PWM(en1, 100)
-
-while True:
-    cmd = raw_input("Command, w = forward / s = backward / x = stop (add a number between 0..9 for speed eg f6):")
-    if len(cmd) > 0:
-        direction = cmd[0]
-    if direction == "w":
-        forwards()
-    elif direction == "s":
-        backwards()
-    elif direction == "a":
-        left()
-    elif direction == "d":
-        right()
-    elif direction == "x":
-        stop()
-    else:
-        stop();
-
-    speed = int(cmd[1]) * 11
-    pwm_left.start(speed)
-    pwm_right.start(speed)
-
-GPIO.cleanup()
