@@ -5,6 +5,8 @@
 import os, struct, array
 from fcntl import ioctl
 
+imoprt Car
+
 # Iterate over the joystick devices.
 print('Available devices:')
 
@@ -168,4 +170,5 @@ while True:
                         rspeed = rspeed - fvalue
                     elif fvalue < 0:
                         lspeed = lspeed + fvalue
-            print("left: %.3f, right: %3.f" % (lspeed, rspeed))
+            print("left: %.3f, right: %.3f" % (lspeed, rspeed))
+            
