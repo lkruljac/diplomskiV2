@@ -134,6 +134,8 @@ print('%d axes found: %s' % (num_axes, ', '.join(axis_map)))
 print('%d buttons found: %s' % (num_buttons, ', '.join(button_map)))
 
 # Main event loop
+
+
 while True:
     evbuf = jsdev.read(8)
     if evbuf:
@@ -156,4 +158,14 @@ while True:
             if axis:
                 fvalue = value / 32767.0
                 axis_states[axis] = fvalue
-                print("%s: %.3f" % (axis, fvalue))
+                #print("%s: %.3f" % (axis, fvalue))
+                if axis == 'y':
+                    speed = fvalue
+                    rspeed = speed
+                    lspeed = speed
+                if axis == 'x':
+                    if fvalue > 0 :
+                        rspeed = rspeed - fvalue
+                    elif fvalue < 0:
+                        lspeed = lspeed + fvalue
+            print("left: %.3f, right: %3.f" % (lspeed, rspeed))
