@@ -1,173 +1,159 @@
-#!/usr/bin/env python
-# coding: Latin-1
+# Released by rdb under the Unlicense (unlicense.org)
+# Based on information from:
+# https://www.kernel.org/doc/Documentation/input/joystick-api.txt
 
-# Load library functions we want
-import time
-import pygame
-import RPi.GPIO as GPIO
-import turtle  # to draw the drawing along with Robot
-from turtle import *
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
+import os, struct, array
+from fcntl import ioctl
 
-# Set which GPIO pins the drive outputs are connected to
-DRIVE_1 = 23
-DRIVE_2 = 24
-DRIVE_3 = 9
-DRIVE_4 = 10
+# Iterate over the joystick devices.
+print('Available devices:')
 
-en1 = 25
-en2 = 11
+for fn in os.listdir('/dev/input'):
+    if fn.startswith('js'):
+        print('  /dev/input/%s' % (fn))
 
-# Set all of the drive pins as output pins
-GPIO.setup(DRIVE_1, GPIO.OUT)
-GPIO.setup(DRIVE_2, GPIO.OUT)
-GPIO.setup(DRIVE_3, GPIO.OUT)
-GPIO.setup(en1, GPIO.OUT)
-GPIO.setup(en2, GPIO.OUT)
-GPIO.setup(DRIVE_4, GPIO.OUT)
+# We'll store the states here.
+axis_states = {}
+button_states = {}
 
-# Function to set all drives off
-def MotorOff():
-    GPIO.output(DRIVE_1, GPIO.LOW)
-    GPIO.output(DRIVE_2, GPIO.LOW)
-    GPIO.output(DRIVE_3, GPIO.LOW)
-    GPIO.output(DRIVE_4, GPIO.LOW)
-    GPIO.setup(en1, GPIO.LOW)
-    GPIO.setup(en2, GPIO.LOW)
+# These constants were borrowed from linux/input.h
+axis_names = {
+    0x00 : 'x',
+    0x01 : 'y',
+    0x02 : 'z',
+    0x03 : 'rx',
+    0x04 : 'ry',
+    0x05 : 'rz',
+    0x06 : 'trottle',
+    0x07 : 'rudder',
+    0x08 : 'wheel',
+    0x09 : 'gas',
+    0x0a : 'brake',
+    0x10 : 'hat0x',
+    0x11 : 'hat0y',
+    0x12 : 'hat1x',
+    0x13 : 'hat1y',
+    0x14 : 'hat2x',
+    0x15 : 'hat2y',
+    0x16 : 'hat3x',
+    0x17 : 'hat3y',
+    0x18 : 'pressure',
+    0x19 : 'distance',
+    0x1a : 'tilt_x',
+    0x1b : 'tilt_y',
+    0x1c : 'tool_width',
+    0x20 : 'volume',
+    0x28 : 'misc',
+}
 
-Button = 2
+button_names = {
+    0x120 : 'trigger',
+    0x121 : 'thumb',
+    0x122 : 'thumb2',
+    0x123 : 'top',
+    0x124 : 'top2',
+    0x125 : 'pinkie',
+    0x126 : 'base',
+    0x127 : 'base2',
+    0x128 : 'base3',
+    0x129 : 'base4',
+    0x12a : 'base5',
+    0x12b : 'base6',
+    0x12f : 'dead',
+    0x130 : 'a',
+    0x131 : 'b',
+    0x132 : 'c',
+    0x133 : 'x',
+    0x134 : 'y',
+    0x135 : 'z',
+    0x136 : 'tl',
+    0x137 : 'tr',
+    0x138 : 'tl2',
+    0x139 : 'tr2',
+    0x13a : 'select',
+    0x13b : 'start',
+    0x13c : 'mode',
+    0x13d : 'thumbl',
+    0x13e : 'thumbr',
 
-#setup turtle screen
-turtle.setup(800,600)
-wn = turtle.Screen() 
-wn.title("Guru's Turtle Robot!") 
-t = turtle.Turtle('turtle')  # choose your own icons have picked turtle
+    0x220 : 'dpad_up',
+    0x221 : 'dpad_down',
+    0x222 : 'dpad_left',
+    0x223 : 'dpad_right',
 
+    # XBox 360 controller uses these codes.
+    0x2c0 : 'dpad_left',
+    0x2c1 : 'dpad_right',
+    0x2c2 : 'dpad_up',
+    0x2c3 : 'dpad_down',
+}
 
-# Settings for JoyBorg
-leftDrive = DRIVE_1                     # Drive number for left motor
-rightDrive = DRIVE_4                    # Drive number for right motor
-axisUpDown = 1                          # Joystick axis to read for up / down position
-axisUpDownInverted = False              # Set this to True if up and down appear to be swapped
-axisLeftRight = 3                       # Joystick axis to read for left / right position
-axisLeftRightInverted = False           # Set this to True if left and right appear to be swapped
-interval = 0.1                          # Time between keyboard updates in seconds, smaller responds faster but uses more processor time
+axis_map = []
+button_map = []
 
-# Setup pygame and key states
-global hadEvent
-global moveUp
-global moveDown
-global moveLeft
-global moveRight
-global moveQuit
-hadEvent = True
-moveUp = False
-moveDown = False
-moveLeft = False
-moveRight = False
-moveQuit = False
-pygame.init()
-pygame.joystick.init()
-joystick = pygame.joystick.Joystick(0)
-joystick.init()
+# Open the joystick device.
+fn = '/dev/input/js0'
+print('Opening %s...' % fn)
+jsdev = open(fn, 'rb')
 
-# Function to handle pygame events
-def PygameHandler(events):
-    # Variables accessible outside this function
-    global hadEvent
-    global moveUp
-    global moveDown
-    global moveLeft
-    global moveRight
-    global moveQuit
-    
-    # Handle each event individually
-    for event in events:
-        if event.type == pygame.QUIT:
-            # User exit
-            hadEvent = True
-            moveQuit = True
-        elif event.type == pygame.KEYDOWN:
-            # A key has been pressed, see if it is one we want
-            hadEvent = True
-            if event.key == pygame.K_ESCAPE:
-                moveQuit = True
-        elif event.type == pygame.KEYUP:
-            # A key has been released, see if it is one we want
-            hadEvent = True
-            if event.key == pygame.K_ESCAPE:
-                moveQuit = False
-        elif event.type == pygame.JOYAXISMOTION:
-            # A joystick has been moved, read axis positions (-1 to +1)
-            hadEvent = True
-            upDown = joystick.get_axis(axisUpDown)
-            leftRight = joystick.get_axis(axisLeftRight)
-            # Invert any axes which are incorrect
-            if axisUpDownInverted:
-                upDown = -upDown
-            if axisLeftRightInverted:
-                leftRight = -leftRight
-            # Determine Up / Down values
-            if upDown < -0.1:
-                moveUp = True
-                moveDown = False
-                t.forward(2)
-                
-            elif upDown > 0.1:
-                moveUp = False
-                moveDown = True
-                t.backward(2)
-                
-            else:
-                moveUp = False
-                moveDown = False
-            # Determine Left / Right values
-            if leftRight < -0.1:
-                moveLeft = True
-                moveRight = False
-                t.left(2)
-                
-            elif leftRight > 0.1:
-                moveLeft = False
-                moveRight = True
-                t.right(2)
-                
-            else:
-                moveLeft = False
-                moveRight = False
-try:
-    print ('Press [ESC] or Press PS3 O button to quit')
-    # Loop indefinitely
-    while True:
-        GPIO.setup(en1, GPIO.HIGH)
-        GPIO.setup(en2, GPIO.HIGH)
-        # Get the currently pressed keys on the keyboard
-        PygameHandler(pygame.event.get())
-        if hadEvent:
-            # Keys have changed, generate the command list based on keys
-            hadEvent = False
-            if moveQuit:
-                break
-            elif moveLeft:
-                leftState = GPIO.LOW
-                rightState = GPIO.HIGH
-            elif moveRight:
-                leftState = GPIO.HIGH
-                rightState = GPIO.LOW
-            elif moveUp:
-                leftState = GPIO.HIGH
-                rightState = GPIO.HIGH
-            else:
-                leftState = GPIO.LOW
-                rightState = GPIO.LOW
-            GPIO.output(leftDrive, leftState)
-            GPIO.output(rightDrive, rightState)
-        # Wait for the interval period
-        time.sleep(interval)
-    # Disable all drives
-    MotorOff()
-except KeyboardInterrupt:
-    # CTRL+C exit, disable all drives
-    MotorOff()
+# Get the device name.
+#buf = bytearray(63)
+buf = array.array('B', [0] * 64)
+ioctl(jsdev, 0x80006a13 + (0x10000 * len(buf)), buf) # JSIOCGNAME(len)
+js_name = buf.tobytes().rstrip(b'\x00').decode('utf-8')
+print('Device name: %s' % js_name)
 
+# Get number of axes and buttons.
+buf = array.array('B', [0])
+ioctl(jsdev, 0x80016a11, buf) # JSIOCGAXES
+num_axes = buf[0]
+
+buf = array.array('B', [0])
+ioctl(jsdev, 0x80016a12, buf) # JSIOCGBUTTONS
+num_buttons = buf[0]
+
+# Get the axis map.
+buf = array.array('B', [0] * 0x40)
+ioctl(jsdev, 0x80406a32, buf) # JSIOCGAXMAP
+
+for axis in buf[:num_axes]:
+    axis_name = axis_names.get(axis, 'unknown(0x%02x)' % axis)
+    axis_map.append(axis_name)
+    axis_states[axis_name] = 0.0
+
+# Get the button map.
+buf = array.array('H', [0] * 200)
+ioctl(jsdev, 0x80406a34, buf) # JSIOCGBTNMAP
+
+for btn in buf[:num_buttons]:
+    btn_name = button_names.get(btn, 'unknown(0x%03x)' % btn)
+    button_map.append(btn_name)
+    button_states[btn_name] = 0
+
+print('%d axes found: %s' % (num_axes, ', '.join(axis_map)))
+print('%d buttons found: %s' % (num_buttons, ', '.join(button_map)))
+
+# Main event loop
+while True:
+    evbuf = jsdev.read(8)
+    if evbuf:
+        time, value, type, number = struct.unpack('IhBB', evbuf)
+
+        if type & 0x80:
+             print("(initial)", end="")
+
+        if type & 0x01:
+            button = button_map[number]
+            if button:
+                button_states[button] = value
+                if value:
+                    print("%s pressed" % (button))
+                else:
+                    print("%s released" % (button))
+
+        if type & 0x02:
+            axis = axis_map[number]
+            if axis:
+                fvalue = value / 32767.0
+                axis_states[axis] = fvalue
+                print("%s: %.3f" % (axis, fvalue))
