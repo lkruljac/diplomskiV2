@@ -46,6 +46,8 @@
     <Compile Include="Connectors\Connector.cs" />
     <Compile Include="Connectors\NetworkConnector.cs" />
     <Compile Include="DeviceModel.cs" />
+    <Compile Include="EDeviceType.cs" />
+    <Compile Include="EEventType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
