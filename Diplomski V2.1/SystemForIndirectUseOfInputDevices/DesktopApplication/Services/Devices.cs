@@ -16,14 +16,7 @@ namespace Services
         public static ObservableCollection<DeviceModel> GetAllDevices()
         {
             ObservableCollection<DeviceModel> devices = new ObservableCollection<DeviceModel>();
-
-            //{
-            //    new DeviceModel(null, null, "Keyboard"),
-            //    new DeviceModel(null, null, "Mouse"),
-            //    new DeviceModel(null, null, "Joystick")
-            //};
-
-            foreach(DeviceModel item in RawInput.RawInputWrapper.GetAllDevices())
+            foreach (DeviceModel item in RawInput.RawInputWrapper.GetAllDevices())
             {
                 devices.Add(item);
             }

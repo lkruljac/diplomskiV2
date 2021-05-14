@@ -168,22 +168,25 @@ namespace ViewModel.Pages
                 if (device.IsSelected)
                 {
                     Thread deviceThread = null;
-                    if(device.Type == "Keyboard")
+                    if (device.Type == EDeviceType.Keyboard)
                     {
                         Services.KeyboardHandler keyboardHandler = new Services.KeyboardHandler();
                         keyboardHandler.Connector = SelectedConnectionControl.Connector;
                         keyboardHandler.GUIOnDeviceEvent += OnDeviceEvent;
                         deviceThread = Services.RawInput.RawInputWrapper.KeyboardListenerThread(keyboardHandler.OnDeviceEvent, device.Id);
                     }
-                    else if (device.Type == "Mouse")
+                    else if (device.Type == EDeviceType.Mouse)
                     {
                         Services.JoystickHandler mouseHandler = new Services.JoystickHandler();
+                        mouseHandler.Connector = SelectedConnectionControl.Connector;
                         mouseHandler.GUIOnDeviceEvent += OnDeviceEvent;
                         deviceThread = Services.RawInput.RawInputWrapper.MouseListenerThread(mouseHandler.OnDeviceEvent, device.Id);
                     }
-                    else if (device.Type == "Joystick")
+                    else if (device.Type == EDeviceType.Joystick)
                     {
+
                         Services.JoystickHandler joystickHandler = new Services.JoystickHandler();
+                        joystickHandler.Connector = SelectedConnectionControl.Connector;
                         joystickHandler.GUIOnDeviceEvent += OnDeviceEvent;
                         deviceThread = Services.RawInput.RawInputWrapper.JoystickListenerThread(joystickHandler.OnDeviceEvent, device.Id);
                     }

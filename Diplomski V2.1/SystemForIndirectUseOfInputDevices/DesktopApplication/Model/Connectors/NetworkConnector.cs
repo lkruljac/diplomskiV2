@@ -48,12 +48,18 @@ namespace Model.Connectors
 
         #region Methods
 
-        public override void SendMessage(string stringMessage)
+        public override void SendMessage(byte[] data)
         {
-            var data = Encoding.ASCII.GetBytes(stringMessage);
-            // Send the message to the connected TcpServer.
-            Stream.Write(data, 0, data.Length);
-            Console.WriteLine("Sent: {0}", stringMessage);
+            try
+            {
+                Stream.Write(data, 0, data.Length);
+     
+            }
+            catch
+            {
+                Console.WriteLine("Error");
+            }
+         
         }
 
         public override void Connect()
@@ -91,6 +97,7 @@ namespace Model.Connectors
                 if (responseData == "Test message\0")
                 {
                     Status = "Connected";
+                    IsConnected = true;
                 }
             }
             catch (ArgumentNullException e)

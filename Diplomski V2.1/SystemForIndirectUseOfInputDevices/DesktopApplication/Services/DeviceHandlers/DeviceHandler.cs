@@ -25,7 +25,7 @@ namespace Services
             }
             if (Connector.IsConnected)
             {
-                Connector?.SendMessage(data.ToString());
+                Connector?.SendMessage(MessageGenerator.GenerateByteArray(data));
             }
 
         }

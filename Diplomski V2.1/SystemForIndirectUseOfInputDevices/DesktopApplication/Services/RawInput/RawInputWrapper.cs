@@ -128,12 +128,31 @@ namespace Services.RawInput
                 {
                     continue;
                 }
-                device.Type = item.DeviceType.ToString();
+                device.Type = item.GetCustomDeviceType();
                 device.Id = item.Handle.ToString();
                 devices.Add(device);
             }
             //devices = devices.GroupBy(x => x.Id).Select(x => x.First()).ToList();
             return devices;
+        }
+
+
+        public static EDeviceType GetCustomDeviceType(this RawInputDevice device)
+        {
+            if(device.DeviceType == RawInputDeviceType.Keyboard)
+            {
+                return EDeviceType.Keyboard;
+            }
+            else if(device.DeviceType == RawInputDeviceType.Mouse)
+            {
+                return EDeviceType.Mouse;
+            }
+            else if (device.DeviceType == RawInputDeviceType.Hid)
+            {
+                return EDeviceType.Joystick;
+            }
+            return EDeviceType.None;
+
         }
 
     }

@@ -26,8 +26,8 @@ namespace Model
         }
 
 
-        private string _Type;
-        public string Type
+        private EDeviceType _Type;
+        public EDeviceType Type
         {
             get { return _Type; }
             set { _Type = value; RaisePropertyChangedEvent("Type"); }
@@ -46,7 +46,7 @@ namespace Model
         #region Constructor(s)
         public DeviceModel(){}
 
-        public DeviceModel(string name, string id, string type)
+        public DeviceModel(string name, string id, EDeviceType type)
         {
             Name = name;
             Id = id;

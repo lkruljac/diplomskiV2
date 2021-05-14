@@ -36,7 +36,7 @@ namespace Model.Connectors
 
         #endregion
 
-        public abstract void SendMessage(string message);
+        public abstract void SendMessage(byte[] data);
         public abstract void Connect();
     }
 }

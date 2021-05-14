@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    enum EEventType
+    public enum EEventType
     {
         KeyPressed = 0,
         KeyReleased = 1
