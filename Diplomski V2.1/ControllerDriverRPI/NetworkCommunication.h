@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <sys/types.h>
 #include <unistd.h>
@@ -8,10 +9,13 @@
 #include <string.h>
 #include <string>
 
-using namespace std;
 
+
+using namespace std;
 
 
 char* getLocalIp(char* netAdapter);
 void* NetworkThread(void*);
 int NetworkCommunication_Start(uint16_t port);
+int RecieveData(int* dataBuffer, int size);
+

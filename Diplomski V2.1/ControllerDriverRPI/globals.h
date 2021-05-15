@@ -5,9 +5,12 @@
 
 
 typedef struct Message {
-	short int code;
-	short int deviceType;
-	short int eventType;
+	int deviceType;
+	int eventType;
+	int keyCode;
+	int scanCode;
+	int size;
+	int* content;
 }Message;
 
 extern int clientSocket;

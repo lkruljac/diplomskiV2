@@ -84,12 +84,23 @@ namespace Services.RawInput
             Thread joystickListenerThread = new Thread(() =>
             {
                 var joystick = new RawInputReceiverWindow();
+                RawInputData previousMessage = null;
                 joystick.Input += (sender, e) =>
                 {
                     if (deviceIdFilter != e.Data.Header.DeviceHandle.ToString())
                     {
                         return;
                     }
+                    if (previousMessage?.ToString() == e.Data.ToString())
+                    {
+                        return;
+                    }
+                    dynamic dataObject = e.Data;
+                    if (dataObject.Hid.Count > 1)
+                    {
+                        return;
+                    }
+                    previousMessage = e.Data;
                     onDeviceEventCallback(e.Data);
                 };
 

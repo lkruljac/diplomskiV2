@@ -40,6 +40,7 @@ namespace Services
                     ByteData = ByteData.Combine(content);
                     break;
             }
+
             return ByteData.ToArray();
         }
 

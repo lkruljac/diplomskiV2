@@ -20,7 +20,7 @@
 int InitInputDevice();
 void KeyPressed(int fd_key_emulator, int code);
 void KeyReleased(int fd_key_emulator, int code);
-
+static void setup_abs(int fd, unsigned chan, int min, int max);
 void* DeviceThread(void*);
 #endif
 
