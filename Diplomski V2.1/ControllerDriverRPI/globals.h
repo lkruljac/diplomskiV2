@@ -10,7 +10,7 @@ typedef struct Message {
 	int keyCode;
 	int scanCode;
 	int size;
-	int* content;
+	uint8_t* content;
 }Message;
 
 extern int clientSocket;

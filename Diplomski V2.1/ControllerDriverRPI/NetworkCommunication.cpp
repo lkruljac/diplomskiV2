@@ -156,20 +156,14 @@ void* NetworkThread(void*) {
 
 			//Content
 			free(msg.content);
-			msg.content = (int*)malloc(msg.size * sizeof(int));
-			if (msg.size != RecieveData(msg.content, msg.size))
+			msg.content = (uint8_t*)malloc(msg.size * sizeof(uint8_t));
+			if (msg.size != RecieveData((int*)msg.content, msg.size))
 			{
 				break;
 			}
 		}
 
-		//memcpy(&msg.code, buf, 2);
-		//memcpy(&msg.deviceType, &buf[1], 2);
-		//memcpy(&msg.eventType, &buf[2], 2);
-		//printf("Parsed\n");
-		usleep(10);
 		recivedEventFlag = 1;
-
 	}
 	return nullptr;
 

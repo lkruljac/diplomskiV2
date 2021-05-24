@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7dde9879-406a-4f90-a2d1-397f731eeaa9}</ProjectGuid>
+    <ProjectGuid>{1930b8bc-d0a2-42b9-9ccc-ca6c06316a1a}</ProjectGuid>
     <Keyword>Linux</Keyword>
-    <RootNamespace>ControllerDriverRPI</RootNamespace>
+    <RootNamespace>JoystickEmulator</RootNamespace>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ApplicationType>Linux</ApplicationType>
     <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
@@ -46,18 +46,13 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
-      <LibraryDependencies>pthread</LibraryDependencies>
+      <LibraryDependencies>wiringPi</LibraryDependencies>
     </Link>
     <RemotePostBuildEvent>
-      <Command>
-      </Command>
-      <Message>
-      </Message>
+      <Command>gpio export 17 out</Command>
+      <Message>export pin 17 using the gpio utility so that we can execute the blink program without sudo</Message>
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -70,26 +65,15 @@
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="argumentParser.cpp" />
-    <ClCompile Include="globals.cpp" />
     <ClCompile Include="inputDevice.cpp" />
     <ClCompile Include="Joystick.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NetworkCommunication.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="argumentParser.h" />
-    <ClInclude Include="globals.h" />
     <ClInclude Include="inputDevice.h" />
     <ClInclude Include="Joystick.h" />
-    <ClInclude Include="NetworkCommunication.h" />
   </ItemGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <ClCompile>
-      <CLanguageStandard>gnu11</CLanguageStandard>
-      <CppLanguageStandard>c++11</CppLanguageStandard>
-    </ClCompile>
-  </ItemDefinitionGroup>
+  <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>
