@@ -114,21 +114,27 @@ input_event* GenerateEvent(JoystickButtonsState bs) {
 
 	#pragma region ABXY
 	//ABXY
+
 	ev[0].type = EV_KEY;
-	ev[0].code = BTN_A;
-	ev[0].value = 0b0100 & bs.ABXY;
+	ev[0].code = BTN_Y;
+	ev[0].value = 0b00000001 & bs.ABXY;
 
 	ev[1].type = EV_KEY;
 	ev[1].code = BTN_B;
-	ev[1].value = 0b0010 & bs.ABXY;
+	ev[1].value = 0b00000000;
+	__s32 res = 0b00000010 & bs.ABXY;
+	if (res) {
+		ev[1].value = 0b11111111;
+	}
+
 
 	ev[2].type = EV_KEY;
-	ev[2].code = BTN_X;
-	ev[2].value = 0b1000 & bs.ABXY;
-
+	ev[2].code = BTN_A;
+	ev[2].value = 0b00000100 & bs.ABXY;
+	
 	ev[3].type = EV_KEY;
-	ev[3].code = BTN_Y;
-	ev[3].value = 0b0001 & bs.ABXY;
+	ev[3].code = BTN_X;
+	ev[3].value = 0b00001000 & bs.ABXY;
 	#pragma endregion ABXY
 
 	#pragma region Axis
@@ -180,7 +186,7 @@ input_event* GenerateEvent(JoystickButtonsState bs) {
 	if (bs.DPAD == 5 ||
 		bs.DPAD == 6 ||
 		bs.DPAD == 7) {
-		ev[1].value = 0b10000000;
+		ev[11].value = 0b10000000;
 	}
 
 	#pragma endregion DPAD
@@ -193,7 +199,11 @@ input_event* GenerateEvent(JoystickButtonsState bs) {
 
 	ev[13].type = EV_KEY;
 	ev[13].code = BTN_TR;
-	ev[13].value = 0b00000010 & bs.rest;
+	ev[13].value = 0b00000000;
+	res = 0b00000010 & bs.rest;
+	if (res) {
+		ev[13].value = 0b11111111;
+	}
 
 	ev[14].type = EV_KEY;
 	ev[14].code = BTN_TL2;
@@ -213,11 +223,11 @@ input_event* GenerateEvent(JoystickButtonsState bs) {
 
 	ev[18].type = EV_KEY;
 	ev[18].code = BTN_THUMBL;
-	ev[18].value = 0b01000000 & bs.rest;
+	ev[18].value = 0b10000000 & bs.rest;
 
 	ev[19].type = EV_KEY;
 	ev[19].code = BTN_THUMBR;
-	ev[19].value = 0b10000000 & bs.rest;
+	ev[19].value = 0b01000000 & bs.rest;
 	#pragma endregion rest
 	// sync event tells input layer we're done with a "batch" of
 	// updates
