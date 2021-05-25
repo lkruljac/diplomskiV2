@@ -1,5 +1,5 @@
-#ifndef INPUTDEVICE_H
-#define INPUTDEVICE_H
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
 
 #include <cstdlib>
 #include <stdio.h>
@@ -15,14 +15,13 @@
 #include <time.h>
 #include <string>
 
-#include"globals.h"
-#include"Joystick.h"
-#include"Keyboard.h"
 
-int InitInputDevice();
+
+int InitKeyboardDevice(int* KeyboardDescriptor);
+
 void KeyPressed(int fd_key_emulator, int code);
-void KeyReleased(int fd_key_emulator, int code);
-void setup_abs(int fd, unsigned chan, int min, int max);
-void* DeviceThread(void*);
-#endif
 
+void KeyReleased(int fd_key_emulator, int code);
+
+
+#endif

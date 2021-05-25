@@ -92,7 +92,7 @@ int WriteSyncEvent(int JoystickDescriptor)
 }
 
 
-static void setup_abs(int FileDescriptor, unsigned chan, int min, int max)
+ void setup_abs(int FileDescriptor, unsigned chan, int min, int max)
 {
 	if (ioctl(FileDescriptor, UI_SET_ABSBIT, chan))
 		perror("UI_SET_ABSBIT");
@@ -100,7 +100,7 @@ static void setup_abs(int FileDescriptor, unsigned chan, int min, int max)
 	struct uinput_abs_setup s =
 	{
 	 .code = chan,
-	 .absinfo = {.minimum = min,  .maximum = max },
+	 .absinfo = {.minimum = min,  .maximum = max }
 	};
 
 	if (ioctl(FileDescriptor, UI_ABS_SETUP, &s))

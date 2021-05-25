@@ -17,6 +17,9 @@
     <ClCompile Include="Joystick.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -40,6 +43,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="Joystick.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

@@ -108,7 +108,6 @@ int NetworkCommunication_Start(uint16_t port) {
 	// Echo message back to client
 	send(clientSocket, buf, bytesReceived + 1, 0);
 
-	//close(clientSocket);
 	return 0;
 }
 
@@ -122,8 +121,12 @@ void* NetworkThread(void*) {
 		int size = 4;
 		if (size != RecieveData(&msg.deviceType, size))
 		{
+			if (size == -2) {
+				continue;
+			}
 			break;
 		}
+
 
 		//Keyboard
 		if (msg.deviceType == 1)
@@ -181,9 +184,39 @@ int RecieveData(int* dataBuffer, int size)
 	}
 	if (bytesReceived == 0)
 	{
-		cout << "Client disconnected " << endl;
-		return 0;
+		cout << "Client disconnected. Please reconnect" << endl;
+		while (EstablishConnection("eth0") != 0)
+		{
+			printf("Establisihng connection failed, try again!");
+		}
+		return -2;
 	}
 	return bytesReceived;
+}
+
+int IsAdapterConnected(char* networkAdapter) {
+	char* ip;
+	ip = strdup(getLocalIp(networkAdapter));
+	if (strcmp(ip, "0.0.0.0") == 0) {
+		printf("There is no established connection on network Adapter: \"%s\"\n", networkAdapter);
+		return -1;
+	}
+	return 1;
+}
+
+int EstablishConnection(char* networkAdapter) {
+	int port = 54000;
+	char* ip;
+	ip = strdup(getLocalIp(networkAdapter));
+
+	printf("To set connection please use:\n\tIP: %s,\n\tport: %d\n\n", ip, port);
+	if (NetworkCommunication_Start((uint16_t)port) == 0) {
+		printf("Communication over network established!\n");
+	}
+	else {
+		printf("Can not establish connection!\n");
+		return -1;
+	}
+	return 0;
 }
 

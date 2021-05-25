@@ -39,33 +39,25 @@ int main(int argc, char** argv)
 
     switch(arguments.connectionLinkType) {
         case(uart):
-
+            printf("UART is not suported in this version.\n");
+            return -1;
             break;
         
         case(bluetooth):
-            
+            printf("Bluetooth is not suported in this version.\n");
+            return -1;
             break;
 
         case(network):
         {
-            int port = 54000;
-            char *ip;
-            ip = strdup(getLocalIp(arguments.networkAdapter));
-
-            if (strcmp(ip, "0.0.0.0") == 0) {
-                printf("There is no established connection on network Adapter: \"%s\"\n", arguments.networkAdapter);
+            if (IsAdapterConnected(arguments.networkAdapter) != 1) {
                 exit(1);
             }
-
-            printf("Starting Network communication!\n");
-            printf("To set connection please use:\n\tIP: %s,\n\tport: %d\n\n", ip, port);
-            if (NetworkCommunication_Start((uint16_t)port) == 0) {
-                printf("Communication over network established!\n");
-            }     
-            else {
-                printf("Can not establish connection!\n");
-                exit(1);
-            }
+            //try to establich connection
+            while (EstablishConnection(arguments.networkAdapter) != 0)
+            {
+                printf("Establisihng connection failed, try again!");
+            } 
             printf("\nStarting NetworkListeningThread!\n\n");
             pthread_create(&thread_NetworkListening, NULL, NetworkThread, NULL);
             break;

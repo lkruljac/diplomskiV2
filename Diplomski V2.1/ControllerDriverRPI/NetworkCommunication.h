@@ -18,4 +18,5 @@ char* getLocalIp(char* netAdapter);
 void* NetworkThread(void*);
 int NetworkCommunication_Start(uint16_t port);
 int RecieveData(int* dataBuffer, int size);
-
+int IsAdapterConnected(char* networkAdapter);
+int EstablishConnection(char* networkAdapter);

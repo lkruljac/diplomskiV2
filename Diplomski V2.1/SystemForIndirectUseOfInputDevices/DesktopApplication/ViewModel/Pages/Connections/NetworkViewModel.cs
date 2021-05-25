@@ -99,6 +99,7 @@ namespace ViewModel.Pages.Connections
         {
             //Connector.Stream = null;
             Connector.Status = "Disconnected";
+            Connector.IsConnected = false;
             ConnectCommand.RaiseCanExecuteChanged();
             DisconnectCommand.RaiseCanExecuteChanged();
         }
