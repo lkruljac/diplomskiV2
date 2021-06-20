@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public class DeviceModel : ObservableObject
+    public class DeviceModel : BaseViewModel
     {
         #region Properties
         private string _Name;
