@@ -7,9 +7,6 @@ using System.Windows.Input;
 
 namespace Common
 {
-
-
-
     public class DelegateCommand : ICommand
     {
         private readonly Action _action;
@@ -39,10 +36,7 @@ namespace Common
             if (_checkCanExecute != null) return _checkCanExecute();
             return true;
         }
-
-#pragma warning disable 67
         public event EventHandler CanExecuteChanged;
-#pragma warning restore 67
     }  
     
     public class DelegateCommand<T> : ICommand
@@ -74,9 +68,6 @@ namespace Common
             if (_checkCanExecute != null) return _checkCanExecute();
             return true;
         }
-
-#pragma warning disable 67
         public event EventHandler CanExecuteChanged;
-#pragma warning restore 67
     }
 }
