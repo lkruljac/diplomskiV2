@@ -74,13 +74,13 @@ namespace RPIControllerEmulator_Server.View.Windows
         {
             ListBox listBox = (ListBox)sender;
             BluetoothDeviceInfo targetDevice = adapter.DiscoveredDeviceList.ElementAt(listBox.SelectedIndex);
-            adapter.Pair(targetDevice);
+            //adapter.Pair(targetDevice);
         }
 
         private void Pair_Button_Click(object sender, RoutedEventArgs e)
         {
             BluetoothDeviceInfo targetDevice = adapter.DiscoveredDeviceList.ElementAt(BluetoothDevices_List.SelectedIndex);
-            adapter.Pair(targetDevice);
+            //adapter.Pair(targetDevice);
         }
 
         private void Connect_Button_Click(object sender, RoutedEventArgs e)

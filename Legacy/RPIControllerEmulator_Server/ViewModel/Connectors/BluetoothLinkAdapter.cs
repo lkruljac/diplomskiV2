@@ -66,26 +66,7 @@ namespace RPIControllerEmulator_Server.ViewModel.Connectors
         }
         
 
-        public void Pair(BluetoothDeviceInfo targetDevice)
-        { 
-           BluetoothSecurity.PairRequest(targetDevice.DeviceAddress, null);
-
-
-            BluetoothEndPoint ep = new BluetoothEndPoint(addr, BluetoothService.SerialPort);
-            bool t = false;
-            BluetoothSecurity.PairRequest(addr, "1234");
-            BluetoothClient cli = new BluetoothClient();
-            cli.Connect(ep);
-            t = cli.Connected;
-
-
-            string[] ports = SerialPort.GetPortNames();
-
-            foreach (string s in ports)
-            {
-                cboPorts.Items.Add(s);
-            }
-        }
+  
 
         public void Connect(BluetoothDeviceInfo device)
         {
